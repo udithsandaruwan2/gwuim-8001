@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from .models import Attendance
+from .utils import searchAttendance, paginateAttendance
 
 @login_required(login_url='login')
 def attendanceRecords(request):
@@ -8,12 +10,16 @@ def attendanceRecords(request):
 
     profile = request.user.profile
 
-    # employees, search_query = searchEmployees(request)
-    # custom_range, employees = paginateEmployees(request, employees, 10)
+    attendance, search_query = searchAttendance(request)
+    custom_range, attendance = paginateAttendance(request, attendance, 10)
 
     context = {
         'page': page,
         'page_title': page_title,
-        'profile': profile
+        'profile': profile,
+        'attendance': attendance,
+        'search_query': search_query,
+        'custom_range': custom_range,
+        
     }
     return render(request, 'attendance_management/attendance-records.html', context)

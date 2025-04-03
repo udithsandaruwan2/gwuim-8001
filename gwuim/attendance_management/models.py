@@ -7,7 +7,7 @@ class Attendance(models.Model):
         ('leave', 'Leave'),
         ('pending', 'Pending'),
     ]
-    employee_id = models.CharField(max_length=50, null=True, blank=True)  # Store employee ID from API
+    employee_id = models.IntegerField(null=True, blank=True)  # Store employee ID from API
     date = models.DateField(null=True, blank=True)  # Store date of attendance  
     check_in = models.TimeField(null=True, blank=True)
     check_out = models.TimeField(null=True, blank=True)
@@ -24,6 +24,9 @@ class Attendance(models.Model):
         else:
             self.status = "pending"
         super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['employee_id', 'date']
 
     def __str__(self):
         return f"{self.employee_id} - {self.date} - {self.status}"

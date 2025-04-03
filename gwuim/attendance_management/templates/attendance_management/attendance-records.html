@@ -63,10 +63,10 @@
                 <h5 class="mt-2">Attendance Records</h5>
             </div>
             <div class="col-6 text-end">
-                <form id="searchForm" class="form d-flex justify-content-end" method="GET">
+                <!-- <form id="searchForm" class="form d-flex justify-content-end" method="GET">
                     <input type="date" class="form-control me-2" name="from_date" id="from_date" value="{{ from_date }}" onchange="this.form.submit()">
                     <input type="date" class="form-control" name="to_date" id="to_date" value="{{ to_date }}" onchange="this.form.submit()">
-                </form>
+                </form> -->
             </div>
         </div>
 
@@ -75,23 +75,53 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Employee Number</th>
-                        <th>Name</th>
-                        <th>Department Name</th>
-                        <th>Gender</th>
-                        <th></th> 
+                        <th>Employee Code</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th> 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+
+                    {% if search_query == '' %}
+
+                        <tr>
+                            <td colspan="5" class="text-center">Search Employee to see details.</td>
+                        </tr>
+                    
+                        {% else %}
+
+                            {% for record in attendance %}
+                            
+                            <tr>
+                                <td>{{ record.employee_id }}</td>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.check_in }}</td>
+                                <td>{{ record.check_out }}</td>
+                                <td>{{ record.status }}</td>
+                            </tr>
+                            
+                            
+                            {% empty %}
+                            
+                            <tr>
+                                <td colspan="5" class="text-center">No records found.</td>
+                            </tr>
+                            
+                            {% endfor %}
+
+                        {% endif %}
+
+
+
+                    <!-- <tr>
                         <td colspan="5" class="text-center">No records found.</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
-            {% include 'dashboard/pagination.html' with query_set=employees custom_range=custom_range %}
+            {% include 'dashboard/pagination.html' with query_set=attendance custom_range=custom_range %}
         </div>
-
-
     </div>
 
     {% include 'dashboard/footer.html' %}
