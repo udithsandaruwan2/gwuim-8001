@@ -48,21 +48,11 @@ def importExport(request):
 
 
 
-def export_attendance_pdf(request):
-    page = 'export_attendance_pdf'
-    page_title = 'Attendance PDF'
+def recordExporter(request):
+    page = 'record_exporter'
+    page_title = 'Record Exporter'
 
     profile = request.user.profile if request.user.is_authenticated else None
-
-    # profile = Profile.objects.get(uid=pk)
-    # attendance = Attendance.objects.filter(employee_id=profile.employee_id)  # or filter as needed
-    # html_string = render_to_string("csv_manager/attendance_pdf.html", {'attendance': attendance})
-    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
-
-    # response = HttpResponse(content_type='application/pdf')
-    # response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
-    # html.write_pdf(response)
-    # return response
 
     context = {
         'page': page,
@@ -74,6 +64,35 @@ def export_attendance_pdf(request):
     }
     return render(request, 'csv_manager/record-exporter.html', context)
 
+def exportAttendanceAsPdf(request):
+    id = request.GET.get('employee_id')
+    year = request.GET.get('year')
+    month = request.GET.get('month')
+    print
+
+    # Fetch all attendance records for the employee in the given month and year
+    attendance_records = Attendance.objects.filter(
+        employee_id=id,
+        date__year=year,
+        date__month=month
+    ).order_by('date')
+
+    # Render the HTML template with the attendance records
+    html_string = render_to_string('csv_manager/attendance_pdf.html', {
+        'attendance_records': attendance_records,
+        'employee_id': id,
+        'year': year,
+        'month': month,
+    })
+
+    # Generate PDF from HTML
+    pdf_file = HTML(string=html_string).write_pdf()
+
+    # Create an HTTP response with the PDF content
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="attendance_records.pdf"'  # inline to open in browser
+
+    return response
 # @login_required
 # def export_employees_csv(request):
 #     # Create the HTTP response with CSV content type

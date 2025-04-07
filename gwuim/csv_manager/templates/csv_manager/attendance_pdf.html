@@ -76,9 +76,9 @@
 
 <body>
     <div style="text-align: center;">
-        <img class="logo" src="{% static 'theme_dashboard/assets/images/logos/logo.png' %}" alt="Logo">
+        <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
     </div>
-    <h2 style="text-align:center;">Attendance Report</h2>
+    <h2 style="text-align:center;">Attendance Report <br> ( {{ employee_id }} ) </h2>
 
     <table class="table">
         <thead>
@@ -92,7 +92,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for record in attendance %}
+            {% for record in attendance_records %}
             <tr>
                 <td>{{ record.employee_id }}</td>
                 <td>{{ record.date }}</td>
