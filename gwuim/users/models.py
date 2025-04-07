@@ -20,6 +20,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     email = models.EmailField(null=True, blank=True)
     role = models.ForeignKey(UserRole, on_delete=models.CASCADE, null=True, blank=True)
+    employee_id = models.IntegerField(null=True, blank=True)
     # Common fields
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)

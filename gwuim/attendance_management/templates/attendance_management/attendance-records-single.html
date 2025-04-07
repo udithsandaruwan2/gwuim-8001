@@ -69,9 +69,9 @@
             <!-- Date Filter Form -->
             <form id="dateFilterForm" class="form d-flex justify-content-end mb-3" method="GET">
                 <input type="date" class="form-control me-2" name="from_date" id="from_date" value="{{ request.GET.from_date }}"
-                    onchange="submitCombinedForm('dateFilterForm')" />
+                     onchange="document.getElementById('dateFilterForm').submit();" />
                 <input type="date" class="form-control" name="to_date" id="to_date" value="{{ request.GET.to_date }}"
-                    onchange="submitCombinedForm('dateFilterForm')" />
+                   onchange="document.getElementById('dateFilterForm').submit();" />
             </form>
 
 
@@ -125,7 +125,7 @@
                             {% empty %}
                             
                             <tr>
-                                <td colspan="6" class="text-center">No records found.</td>
+                                <td colspan="5" class="text-center">No records found.</td>
                             </tr>
                             
                             {% endfor %}
@@ -147,32 +147,6 @@
     <div id="data-container"></div>
 </div>
 
-<script>
-    function submitCombinedForm(submittingFormId) {
-        const formA = document.getElementById('searchForm');
-        const formB = document.getElementById('dateFilterForm');
-
-        const activeForm = document.getElementById(submittingFormId);
-        const otherForm = (submittingFormId === 'searchForm') ? formB : formA;
-
-        // Clone values from the other form into hidden inputs
-        const otherInputs = otherForm.querySelectorAll('input');
-        otherInputs.forEach(input => {
-            if (input.name && input.value) {
-                let hidden = activeForm.querySelector(`input[name="${input.name}"]`);
-                if (!hidden) {
-                    hidden = document.createElement('input');
-                    hidden.type = 'hidden';
-                    hidden.name = input.name;
-                    activeForm.appendChild(hidden);
-                }
-                hidden.value = input.value;
-            }
-        });
-
-        activeForm.submit();
-    }
-</script>
 
 
 {% endblock content %}

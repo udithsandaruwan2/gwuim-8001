@@ -68,14 +68,16 @@
         }
 
         img.logo {
-            width: 140px;
+            width: 180px;
             margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
-    <img class="logo" src="{% static 'theme_dashboard/assets/images/logos/logo.png' %}" alt="Logo">
+    <div style="text-align: center;">
+        <img class="logo" src="{% static 'theme_dashboard/assets/images/logos/logo.png' %}" alt="Logo">
+    </div>
     <h2 style="text-align:center;">Attendance Report</h2>
 
     <table class="table">
@@ -117,7 +119,7 @@
         position: fixed;
         bottom: 1px;
         width: 100%;
-            font-size: 7px;
+            font-size: 9px;
 
     ">
 {% include 'dashboard/footer.html' %}

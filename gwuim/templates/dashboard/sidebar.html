@@ -39,7 +39,6 @@
                     }
                 </style>
 
-
                 {% if page == 'dashboard' %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -68,7 +67,7 @@
                 </li>
 {% endif %}
                
-            
+            {% if profile.role.role_name == 'admin' %}
                 {% if page == 'attendance_rcecords' %}
                 
                 <li class="nav-small-cap">
@@ -76,7 +75,10 @@
                     <span class="hide-menu">Attendance Management</span>
                 </li>
                 <li class="sidebar-item  active selected ">
+
                     <a class="sidebar-link" href="{% url 'attendance_records' %}" aria-expanded="false" style="background-color: #932626;">
+
+                        
                         <span>
                             <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
                         </span>
@@ -99,14 +101,58 @@
                 
 
                 {% endif %}
+                {% endif %}
+
+
+                {% if profile.role.role_name == 'employee' %}
+                {% if page == 'attendance_rcecords_single' %}
+                
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Attendance Management</span>
+                </li>
+                <li class="sidebar-item  active selected ">
+                
+                    <a class="sidebar-link" href="{% url 'attendance_records_single' profile.employee_id %}" aria-expanded="false"
+                        style="background-color: #932626;">
+                
+                
+                    <span>
+                        <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
+                    </span>
+                    <span class="hide-menu">Attendance Records</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Attendance Management</span>
+                </li>
+                <li class="sidebar-item sidebar-item-n">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'attendance_records_single' profile.employee_id %}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
+                        </span>
+                        <span class="hide-menu hide-menu-n">Attendance Records</span>
+                    </a>
+                </li>
+                
+                
+                {% endif %}
+                {% endif %}
 
                 
-                
+                {% if profile.role.role_name == 'admin' %}
                 {% if page == 'csv_manager' %}
+                
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Import Export Management</span>
                 </li>
+
+                
+
                 <li class="sidebar-item  active selected ">
                     <a class="sidebar-link" href="{% url 'csv_manager' %}" aria-expanded="false" style="background-color: #932626;">
                         <span>
@@ -115,6 +161,8 @@
                         <span class="hide-menu">CSV Manager</span>
                     </a>
                 </li>
+              
+
                 {% else %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -130,8 +178,20 @@
                 </li>
                 
                 {% endif %}
+                
+                {% endif %}
 
                 {% if page == 'record_exporter' %}
+
+                    {% if profile.role.role_name != 'admin' %}
+
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Import Export Management</span>
+                    </li>
+
+                    {% endif %}
+
                 <li class="sidebar-item  active selected mt-2">
                     <a class="sidebar-link" href="{% url 'export_attendance_pdf' %}" aria-expanded="false" style="background-color: #932626;">
                         <span>
@@ -141,6 +201,14 @@
                     </a>
                 </li>
                 {% else %}
+                {% if profile.role.role_name != 'admin' %}
+                
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Import Export Management</span>
+                </li>
+                
+                {% endif %}
                 <li class="sidebar-item sidebar-item-n mt-2">
                     <a class="sidebar-link sidebar-link-n" href="{% url 'export_attendance_pdf' %}" aria-expanded="false">
                         <span>
