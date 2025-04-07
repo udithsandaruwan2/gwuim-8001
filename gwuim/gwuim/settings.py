@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     # Add the new app to the list of installed apps
     'users.apps.UsersConfig',
     'audit_logs.apps.AuditLogsConfig',
-    'attendance_management.apps.AttendanceManagementConfig'
+    'attendance_management.apps.AttendanceManagementConfig',
+    'csv_manager.apps.CsvManagerConfig',
 
     #Third party apps
     'widget_tweaks',

@@ -39,7 +39,6 @@
                     }
                 </style>
 
-
                 {% if page == 'dashboard' %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -68,148 +67,92 @@
                 </li>
 {% endif %}
                
-
+            {% if profile.role.role_name == 'admin' %}
+                {% if page == 'attendance_rcecords' %}
                 
-                
-                
-
-                {% if profile.role.role_name == 'admin' %}
-                {% if page == 'leave_requests' %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
+                    <span class="hide-menu">Attendance Management</span>
                 </li>
                 <li class="sidebar-item  active selected ">
-                    <a class="sidebar-link" href="{% url 'leave_requests' %}" aria-expanded="false" style="background-color: #932626;">
+
+                    <a class="sidebar-link" href="{% url 'attendance_records' %}" aria-expanded="false" style="background-color: #932626;">
+
+                        
                         <span>
-                            <i class="ti ti-calendar"></i>
+                            <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
                         </span>
-                        <span class="hide-menu">Leave Resuests</span>
+                        <span class="hide-menu">Attendance Records</span>
                     </a>
                 </li>
                 {% else %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
+                    <span class="hide-menu">Attendance Management</span>
                 </li>
                 <li class="sidebar-item sidebar-item-n">
-                    <a class="sidebar-link sidebar-link-n" href="{% url 'leave_requests' %}" aria-expanded="false">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'attendance_records' %}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-calendar"></i>
+                            <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
                         </span>
-                        <span class="hide-menu hide-menu-n">Leave Resuests</span>
+                        <span class="hide-menu hide-menu-n">Attendance Records</span>
                     </a>
                 </li>
+                
+
+                {% endif %}
+                {% endif %}
+
+
+                {% if profile.role.role_name == 'employee' %}
+                {% if page == 'attendance_rcecords_single' %}
+                
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Attendance Management</span>
+                </li>
+                <li class="sidebar-item  active selected ">
+                
+                    <a class="sidebar-link" href="{% url 'attendance_records_single' profile.employee_id %}" aria-expanded="false"
+                        style="background-color: #932626;">
+                
+                
+                    <span>
+                        <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
+                    </span>
+                    <span class="hide-menu">Attendance Records</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Attendance Management</span>
+                </li>
+                <li class="sidebar-item sidebar-item-n">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'attendance_records_single' profile.employee_id %}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-user-check nav-small-cap-icon fs-5" style="transform: scale(1.2);"></i>
+                        </span>
+                        <span class="hide-menu hide-menu-n">Attendance Records</span>
+                    </a>
+                </li>
+                
                 
                 {% endif %}
                 {% endif %}
 
-                
-                
-                
-                
-                {% if profile.role.role_name == 'admin' %}
-                {% if page == 'employees' %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Employee Management</span>
-                </li>
-                <li class="sidebar-item  active selected ">
-                    <a class="sidebar-link" href="{% url 'employees' %}" aria-expanded="false" style="background-color: #932626;">
-                        <span>
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="hide-menu">Employees</span>
-                    </a>
-                </li>
-                {% else %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Employee Management</span>
-                </li>
-                <li class="sidebar-item sidebar-item-n">
-                    <a class="sidebar-link sidebar-link-n" href="{% url 'employees' %}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="hide-menu hide-menu-n">Employees</span>
-                    </a>
-                </li>
-                
-                {% endif %}
-{% endif %}
-                
-                
-                {% if profile.role.role_name == 'admin' %}
-                {% if page == 'departments' %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Department Management</span>
-                </li>
-                <li class="sidebar-item  active selected ">
-                    <a class="sidebar-link" href="{% url 'departments' %}" aria-expanded="false" style="background-color: #932626;">
-                        <span>
-                            <i class="ti ti-building"></i>
-                        </span>
-                        <span class="hide-menu">Departments</span>
-                    </a>
-                </li>
-                {% else %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Department Management</span>
-                </li>
-                <li class="sidebar-item sidebar-item-n">
-                    <a class="sidebar-link sidebar-link-n" href="{% url 'departments' %}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-building"></i>
-                        </span>
-                        <span class="hide-menu hide-menu-n">Departments</span>
-                    </a>
-                </li>
-                
-                {% endif %}
-{% endif %}
-                
-                
-                {% if profile.role.role_name == 'admin' %}
-                {% if page == 'leave_types' %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
-                </li>
-                <li class="sidebar-item  active selected ">
-                    <a class="sidebar-link" href="{% url 'leave_types' %}" aria-expanded="false" style="background-color: #932626;">
-                        <span>
-                            <i class="ti ti-briefcase"></i>
-                        </span>
-                        <span class="hide-menu">Leave Types</span>
-                    </a>
-                </li>
-                {% else %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
-                </li>
-                <li class="sidebar-item sidebar-item-n">
-                    <a class="sidebar-link sidebar-link-n" href="{% url 'leave_types' %}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-briefcase"></i>
-                        </span>
-                        <span class="hide-menu hide-menu-n">Leave Types</span>
-                    </a>
-                </li>
-                
-                {% endif %}
-
-                {% endif %}
                 
                 {% if profile.role.role_name == 'admin' %}
                 {% if page == 'csv_manager' %}
+                
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Import Export Management</span>
                 </li>
+
+                
+
                 <li class="sidebar-item  active selected ">
                     <a class="sidebar-link" href="{% url 'csv_manager' %}" aria-expanded="false" style="background-color: #932626;">
                         <span>
@@ -218,6 +161,8 @@
                         <span class="hide-menu">CSV Manager</span>
                     </a>
                 </li>
+              
+
                 {% else %}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -233,43 +178,49 @@
                 </li>
                 
                 {% endif %}
+                
+                {% endif %}
 
+                {% if page == 'record_exporter' %}
 
-{% endif %}
+                    {% if profile.role.role_name != 'admin' %}
 
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Import Export Management</span>
+                    </li>
 
+                    {% endif %}
 
-
-                {% if profile.role.role_name == 'supervisor' %}
-                {% if page == 'leave_requests' %}
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
-                </li>
-                <li class="sidebar-item  active selected ">
-                    <a class="sidebar-link" href="{% url 'leave_requests_for_approval' %}" aria-expanded="false" style="background-color: #932626;">
+                <li class="sidebar-item  active selected mt-2">
+                    <a class="sidebar-link" href="{% url 'record_exporter' %}" aria-expanded="false" style="background-color: #932626;">
                         <span>
-                            <i class="ti ti-calendar"></i>
+                            <i class="ti ti-file-export"></i>
                         </span>
-                        <span class="hide-menu">Leave Resuests</span>
+                        <span class="hide-menu">Record Exporter</span>
                     </a>
                 </li>
                 {% else %}
+                {% if profile.role.role_name != 'admin' %}
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Leave Management</span>
+                    <span class="hide-menu">Import Export Management</span>
                 </li>
-                <li class="sidebar-item sidebar-item-n">
-                    <a class="sidebar-link sidebar-link-n" href="{% url 'leave_requests_for_approval' %}" aria-expanded="false">
+                
+                {% endif %}
+                <li class="sidebar-item sidebar-item-n mt-2">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'record_exporter' %}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-calendar"></i>
+                            <i class="ti ti-file-export"></i>
                         </span>
-                        <span class="hide-menu hide-menu-n">Leave Resuests</span>
+                        <span class="hide-menu hide-menu-n">Record Exporter</span>
                     </a>
                 </li>
                 
                 {% endif %}
-{% endif %}
+                
+            
 
 
             </ul>

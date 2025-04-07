@@ -9,7 +9,9 @@ urlpatterns = [
     # Add the new app to the list of installed apps
     path('', include('users.urls')),
     path('', include('audit_logs.urls')),
-    path('', include('attendance_management.urls'))
+    path('', include('attendance_management.urls')),
+    path('', include('csv_manager.urls')),
+    
 ]
 
 if settings.DEBUG:

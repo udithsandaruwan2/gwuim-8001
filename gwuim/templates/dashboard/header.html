@@ -54,22 +54,16 @@
         </style>
       
         
-     {% if page != 'leave_types' and page != 'dashboard' and page != 'csv_manager' %}
+     {% if page != 'leave_types' and page != 'dashboard' and page != 'csv_manager' and page != 'attendance_rcecords_single' %}
 
-            <form id="searchForm" class="form" method="GET">
+            <!-- Search Input Form -->
+            <form id="searchForm" class="form" method="GET" onsubmit="submitCombinedForm('searchForm'); return false;">
                 <div class="search-container">
                     <button type="submit" style="all: unset; cursor: pointer;">
                         <img src="https://cdn-icons-png.flaticon.com/512/149/149852.png" class="icon" alt="Search">
                     </button>
-
-                    <input value="{{search_query}}" type="text" id="first-name-horizontal" class="form-control" name="search"
+                    <input value="{{ search_query }}" type="text" class="form-control" name="search"
                         placeholder="Search by code or name" style="border: none; outline: none; box-shadow: none;">
-
-                    <div class="m-2">
-                        <!-- <button class="btn btn-outline-secondary rounded-pill" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button> -->
-                    </div>
                 </div>
             </form>
 

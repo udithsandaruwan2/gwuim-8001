@@ -1,0 +1,178 @@
+{% extends 'dashboard/main.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %} <!-- Load the custom filters -->
+
+{% block content %}
+
+{% include 'dashboard/sidebar.html' %}
+
+<!-- Main wrapper -->
+<div class="body-wrapper">
+
+    {% include 'dashboard/header.html' %}
+
+    <style>
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        .table thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        .table thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        .table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+
+        .table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+        .toggle-btn {
+            background-color: #932626;
+            color: #ffffff;
+            border-color: #932626;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toggle-btn:hover {
+            background-color: #ffffff;
+            color: #932626;
+            border-color: #932626;
+        }
+    </style>
+
+
+    <div class="container-fluid">
+        <div class="row mb-4 align-items-center">
+            <div class="col-6">
+                <h5 class="mt-2">Attendance Records</h5>
+            </div>
+            <div class="col-6 text-end">
+                
+                
+            <!-- Date Filter Form -->
+            <form id="dateFilterForm" class="form d-flex justify-content-end mb-3" method="GET">
+                <input type="date" class="form-control me-2" name="from_date" id="from_date" value="{{ request.GET.from_date }}"
+                    onchange="submitCombinedForm('dateFilterForm')" />
+                <input type="date" class="form-control" name="to_date" id="to_date" value="{{ request.GET.to_date }}"
+                    onchange="submitCombinedForm('dateFilterForm')" />
+            </form>
+
+
+            </div>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th> 
+                        
+                        {% if profile.role.role_name == 'admin' %}
+
+                        <th>More</th>
+
+                        {% endif %}
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                            {% for record in attendance %}
+                            
+                            <tr>
+                                <td>{{ record.employee_id }}</td>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.check_in }}</td>
+                                <td>{{ record.check_out }}</td>
+                                <td>{{ record.status }}</td>
+
+                                {% if profile.role.role_name == 'admin' %}
+
+                                <td>
+                                    <a href="" style="color: #932626;">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                </td>
+
+                                {% endif %}
+
+                            </tr>
+                            
+                            
+                            {% empty %}
+                            
+                            <tr>
+                                <td colspan="6" class="text-center">No records found.</td>
+                            </tr>
+                            
+                            {% endfor %}
+
+
+
+                    <!-- <tr>
+                        <td colspan="5" class="text-center">No records found.</td>
+                    </tr> -->
+                </tbody>
+            </table>
+            {% include 'dashboard/pagination.html' with query_set=attendance custom_range=custom_range %}
+        </div>
+    </div>
+
+    {% include 'dashboard/footer.html' %}
+
+
+    <div id="data-container"></div>
+</div>
+
+<script>
+    function submitCombinedForm(submittingFormId) {
+        const formA = document.getElementById('searchForm');
+        const formB = document.getElementById('dateFilterForm');
+
+        const activeForm = document.getElementById(submittingFormId);
+        const otherForm = (submittingFormId === 'searchForm') ? formB : formA;
+
+        // Clone values from the other form into hidden inputs
+        const otherInputs = otherForm.querySelectorAll('input');
+        otherInputs.forEach(input => {
+            if (input.name && input.value) {
+                let hidden = activeForm.querySelector(`input[name="${input.name}"]`);
+                if (!hidden) {
+                    hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = input.name;
+                    activeForm.appendChild(hidden);
+                }
+                hidden.value = input.value;
+            }
+        });
+
+        activeForm.submit();
+    }
+</script>
+
+
+{% endblock content %}
