@@ -34,7 +34,7 @@
 
                                     async function fetchAndRenderChart() {
                                         try {
-                                            const response = await fetch('/api/leave-requests-chart-data/');
+                                            const response = await fetch('/api/attendance-chart-data/');
                                             const data = await response.json();
 
                                             const options = {
@@ -43,7 +43,7 @@
                                                     height: 350
                                                 },
                                                 series: [{
-                                                    name: 'Number of Leaves',
+                                                    name: 'Number of Attendance',
                                                     data: data.values
                                                 }],
                                                 xaxis: {
@@ -111,7 +111,7 @@
 
                                             // Function to render or update the chart
                                             function renderPieChart() {
-                                                fetch('/api/leave-requests-pie-chart-data/')
+                                                fetch('/api/attendance-pie-chart-data/')
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         const options = {
@@ -161,7 +161,7 @@
                                                             tooltip: {
                                                                 enabled: true,
                                                                 y: {
-                                                                    formatter: (val) => `${val} Requests`
+                                                                    formatter: (val) => `${val} Attendace`
                                                                 }
                                                             }
                                                         };
@@ -192,8 +192,8 @@
                                 <div class="card overflow-hidden">
                                     <div class="card-body p-4 mt-4 mb-4">
                                         <h5 class="card-title d-flex justify-content-between">
-                                            Total Requests
-                                            <span class="text-end me-3">{{ leave_requests_count }}</span>
+                                            Average Attendace <br>( {{ current_year }} - {{ current_month }} )
+                                            <span class="text-end me-3">{{ average_count }}</span>
                                         </h5>
 
                                     </div>
@@ -257,7 +257,7 @@
 
                                             {% empty %}
                                             <tr>
-                                                <td colspan="5" class="text-center">No employees found.</td>
+                                                <td colspan="5" class="text-center">No transaction found.</td>
                                             </tr>
 
                                             {% endfor %}

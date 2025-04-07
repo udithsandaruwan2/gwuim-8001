@@ -6,6 +6,9 @@ import csv
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from attendance_management.models import Attendance
 
 @login_required(login_url='login')
 def importExport(request):
@@ -39,6 +42,21 @@ def importExport(request):
     }
 
     return render(request, 'csv_manager/import-export.html', context)
+
+# views.py
+
+
+
+def export_attendance_pdf(request):
+    attendance = Attendance.objects.filter(employee_id='101')  # or filter as needed
+    html_string = render_to_string("csv_manager/attendance_pdf.html", {'attendance': attendance})
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
+    html.write_pdf(response)
+    return response
+
 
 # @login_required
 # def export_employees_csv(request):

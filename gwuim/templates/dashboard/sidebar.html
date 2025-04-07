@@ -130,6 +130,27 @@
                 </li>
                 
                 {% endif %}
+
+                {% if page == 'record_exporter' %}
+                <li class="sidebar-item  active selected mt-2">
+                    <a class="sidebar-link" href="{% url 'export_attendance_pdf' %}" aria-expanded="false" style="background-color: #932626;">
+                        <span>
+                            <i class="ti ti-file-export"></i>
+                        </span>
+                        <span class="hide-menu">Record Exporter</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="sidebar-item sidebar-item-n mt-2">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'export_attendance_pdf' %}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-file-export"></i>
+                        </span>
+                        <span class="hide-menu hide-menu-n">Record Exporter</span>
+                    </a>
+                </li>
+                
+                {% endif %}
                 
             
 

@@ -24,6 +24,7 @@
         .table th,
         .table td {
             border: 1px solid #dee2e6;
+            text-align: center;
         }
 
         .table thead th:first-child {
@@ -63,10 +64,17 @@
                 <h5 class="mt-2">Attendance Records</h5>
             </div>
             <div class="col-6 text-end">
-                <!-- <form id="searchForm" class="form d-flex justify-content-end" method="GET">
-                    <input type="date" class="form-control me-2" name="from_date" id="from_date" value="{{ from_date }}" onchange="this.form.submit()">
-                    <input type="date" class="form-control" name="to_date" id="to_date" value="{{ to_date }}" onchange="this.form.submit()">
-                </form> -->
+                
+                
+            <!-- Date Filter Form -->
+            <form id="dateFilterForm" class="form d-flex justify-content-end mb-3" method="GET">
+                <input type="date" class="form-control me-2" name="from_date" id="from_date" value="{{ request.GET.from_date }}"
+                    onchange="submitCombinedForm('dateFilterForm')" />
+                <input type="date" class="form-control" name="to_date" id="to_date" value="{{ request.GET.to_date }}"
+                    onchange="submitCombinedForm('dateFilterForm')" />
+            </form>
+
+
             </div>
         </div>
 
@@ -80,17 +88,11 @@
                         <th>Check In</th>
                         <th>Check Out</th>
                         <th>Status</th> 
+                        <th>More</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    {% if search_query == '' %}
-
-                        <tr>
-                            <td colspan="5" class="text-center">Search Employee to see details.</td>
-                        </tr>
-                    
-                        {% else %}
 
                             {% for record in attendance %}
                             
@@ -100,6 +102,11 @@
                                 <td>{{ record.check_in }}</td>
                                 <td>{{ record.check_out }}</td>
                                 <td>{{ record.status }}</td>
+                                <td>
+                                    <a href="" style="color: #932626;">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                </td>
                             </tr>
                             
                             
@@ -110,8 +117,6 @@
                             </tr>
                             
                             {% endfor %}
-
-                        {% endif %}
 
 
 
@@ -129,5 +134,33 @@
 
     <div id="data-container"></div>
 </div>
+
+<script>
+    function submitCombinedForm(submittingFormId) {
+        const formA = document.getElementById('searchForm');
+        const formB = document.getElementById('dateFilterForm');
+
+        const activeForm = document.getElementById(submittingFormId);
+        const otherForm = (submittingFormId === 'searchForm') ? formB : formA;
+
+        // Clone values from the other form into hidden inputs
+        const otherInputs = otherForm.querySelectorAll('input');
+        otherInputs.forEach(input => {
+            if (input.name && input.value) {
+                let hidden = activeForm.querySelector(`input[name="${input.name}"]`);
+                if (!hidden) {
+                    hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = input.name;
+                    activeForm.appendChild(hidden);
+                }
+                hidden.value = input.value;
+            }
+        });
+
+        activeForm.submit();
+    }
+</script>
+
 
 {% endblock content %}

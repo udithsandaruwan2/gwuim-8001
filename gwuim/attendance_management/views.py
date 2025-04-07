@@ -10,8 +10,9 @@ def attendanceRecords(request):
 
     profile = request.user.profile
 
-    attendance, search_query = searchAttendance(request)
+    attendance, search_query, from_date, to_date = searchAttendance(request)
     custom_range, attendance = paginateAttendance(request, attendance, 10)
+    
 
     context = {
         'page': page,
@@ -20,6 +21,8 @@ def attendanceRecords(request):
         'attendance': attendance,
         'search_query': search_query,
         'custom_range': custom_range,
+        'from_date': from_date,
+        'to_date': to_date,
         
     }
     return render(request, 'attendance_management/attendance-records.html', context)

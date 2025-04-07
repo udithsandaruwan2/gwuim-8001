@@ -1,16 +1,31 @@
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Attendance
+from datetime import datetime
 
 def searchAttendance(request):
     search_query = request.GET.get('search', '').strip()
-    
-    if search_query.isdigit():  # Ensure search_query is a number before filtering by employee_id
-        attendance = Attendance.objects.filter(employee_id=search_query)
-    else:
-        attendance = Attendance.objects.none()  # Return empty queryset if invalid input
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
 
-    return attendance, search_query
+    attendance = Attendance.objects.all()
+
+    # Filter by employee_id if numeric
+    if search_query.isdigit():
+        attendance = attendance.filter(employee_id=search_query)
+    elif search_query:
+        attendance = Attendance.objects.none()  # Invalid search query
+
+    # Filter by date range if both dates are provided
+    if from_date and to_date:
+        try:
+            from_date_obj = datetime.strptime(from_date, '%Y-%m-%d').date()
+            to_date_obj = datetime.strptime(to_date, '%Y-%m-%d').date()
+            attendance = attendance.filter(date__range=(from_date_obj, to_date_obj))
+        except ValueError:
+            attendance = Attendance.objects.none()  # Invalid date format
+
+    return attendance, search_query, from_date, to_date
 
 
 def paginateAttendance(request, attendance, results):
