@@ -1,0 +1,94 @@
+{% extends 'dashboard/main.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %} <!-- Load the custom filters -->
+
+{% block content %}
+
+{% include 'dashboard/sidebar.html' %}
+
+<!-- Main wrapper -->
+<div class="body-wrapper">
+
+    {% include 'dashboard/header.html' %}
+
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-9">
+                <h5 class="mt-2">Imports / Exports</h5>
+            </div>
+            <div class="col-3 text-end">
+                <!-- <button class="btn toggle-btn" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                    <i class="fas fa-plus"></i> New Employee
+                </button> -->
+            </div>
+        </div>
+
+        <!-- Form for selecting Employee ID and Month -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="emp_id">Employee ID</label>
+                                <input type="text" class="form-control" id="emp_id" name="emp_id"
+                                    placeholder="Enter Employee ID" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="month">Select Month</label>
+                                <select class="form-control" id="month" name="month" required>
+                                    <option value="">Choose Month</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn toggle-btn">
+                            <i class="fas fa-file-pdf"></i> Export attendance as PDF
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <style>
+        .toggle-btn {
+                        background-color: #932626;
+                        color: #ffffff;
+                        border-color: #932626;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .toggle-btn:hover {
+                        background-color: #ffffff;
+                        color: #932626;
+                        border-color: #932626;
+                    }
+
+    </style>
+
+    {% include 'csv_manager/import-model.html' %}
+
+    <div id="data-container"></div>
+</div>
+
+{% endblock content %}

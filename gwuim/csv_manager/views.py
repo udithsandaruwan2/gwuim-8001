@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from attendance_management.models import Attendance
+from users.models import Profile
 
 @login_required(login_url='login')
 def importExport(request):
@@ -48,15 +49,30 @@ def importExport(request):
 
 
 def export_attendance_pdf(request):
-    attendance = Attendance.objects.filter(employee_id='101')  # or filter as needed
-    html_string = render_to_string("csv_manager/attendance_pdf.html", {'attendance': attendance})
-    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    page = 'export_attendance_pdf'
+    page_title = 'Attendance PDF'
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
-    html.write_pdf(response)
-    return response
+    profile = request.user.profile if request.user.is_authenticated else None
 
+    # profile = Profile.objects.get(uid=pk)
+    # attendance = Attendance.objects.filter(employee_id=profile.employee_id)  # or filter as needed
+    # html_string = render_to_string("csv_manager/attendance_pdf.html", {'attendance': attendance})
+    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
+    # html.write_pdf(response)
+    # return response
+
+    context = {
+        'page': page,
+        'page_title': page_title,
+        'profile': profile,
+        # 'profile': profile,
+        # 'attendance': attendance,
+        
+    }
+    return render(request, 'csv_manager/record-exporter.html', context)
 
 # @login_required
 # def export_employees_csv(request):
