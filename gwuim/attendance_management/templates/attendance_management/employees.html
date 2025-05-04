@@ -1,0 +1,127 @@
+{% extends 'dashboard/main.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %} <!-- Load the custom filters -->
+
+{% block content %}
+
+{% include 'dashboard/sidebar.html' %}
+
+<!-- Main wrapper -->
+<div class="body-wrapper">
+
+    {% include 'dashboard/header.html' %}
+    
+    <style>
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+    
+        .table th,
+        .table td {
+            border: 1px solid #dee2e6;
+        }
+    
+        .table thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+    
+        .table thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+    
+        .table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+    
+        .table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+        .toggle-btn {
+                        background-color: #932626;
+                        color: #ffffff;
+                        border-color: #932626;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .toggle-btn:hover {
+                        background-color: #ffffff;
+                        color: #932626;
+                        border-color: #932626;
+                    }
+    </style>
+
+
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-9">
+                <h5 class="mt-2">Employee List</h5>
+            </div>
+            <div class="col-3 text-end">
+                <!-- <button class="btn toggle-btn" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                    <i class="fas fa-plus"></i> New Employee
+                </button> -->
+            </div>
+        </div>
+
+        
+
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Employee Number</th>
+                        <th>Name</th>
+                        <th>Department Name</th>
+                        <th>Gender</th>
+                        
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr>
+                        <td> {% if employee.employee_code %} {{employee.employee_code}} {% else %} # {% endif %} </td>
+                        <td>{{ employee.full_name }}</td>
+                        <td>{{ employee.department.name }}</td>
+                        <td>{{ employee.gender }}</td>
+                        
+                        <td style="text-align: center;">
+                            <div style="display: inline-flex; gap: 16px; align-items: center;">
+                                <a style="color: #932626; text-decoration: none;" href=""
+                                    target="_blank">
+                                    <i class="fas fa-info-circle"></i> More
+                                </a>
+                                <a style="color: #932626; text-decoration: none;" href="">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No employees found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include 'dashboard/pagination.html' with query_set=employees custom_range=custom_range %}
+        </div>
+
+        
+    </div>
+
+    {% include 'dashboard/footer.html' %}
+    
+
+    <div id="data-container"></div>
+</div>
+
+{% endblock content %}

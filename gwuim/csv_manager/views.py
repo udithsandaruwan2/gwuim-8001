@@ -6,6 +6,9 @@ import csv
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
+from django.templatetags.static import static
+import os
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from attendance_management.models import Attendance
@@ -47,7 +50,7 @@ def importExport(request):
 # views.py
 
 
-
+@login_required(login_url='login')
 def recordExporter(request):
     page = 'record_exporter'
     page_title = 'Record Exporter'
@@ -68,31 +71,32 @@ def exportAttendanceAsPdf(request):
     id = request.GET.get('employee_id')
     year = request.GET.get('year')
     month = request.GET.get('month')
-    print
 
-    # Fetch all attendance records for the employee in the given month and year
     attendance_records = Attendance.objects.filter(
         employee_id=id,
         date__year=year,
         date__month=month
     ).order_by('date')
 
-    # Render the HTML template with the attendance records
+    # Absolute static path (URL)
+    logo_url = request.build_absolute_uri(static('logo.png'))
+
     html_string = render_to_string('csv_manager/attendance_pdf.html', {
         'attendance_records': attendance_records,
         'employee_id': id,
         'year': year,
         'month': month,
+        'logo_url': logo_url,  # Add this to the context
     })
 
-    # Generate PDF from HTML
-    pdf_file = HTML(string=html_string).write_pdf()
+    # Base URL required to resolve relative static/media paths
+    pdf_file = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf()
 
-    # Create an HTTP response with the PDF content
     response = HttpResponse(pdf_file, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="attendance_records.pdf"'  # inline to open in browser
-
+    response['Content-Disposition'] = 'inline; filename="attendance_records.pdf"'
     return response
+
+
 # @login_required
 # def export_employees_csv(request):
 #     # Create the HTTP response with CSV content type

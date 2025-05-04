@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Attendance
 from .utils import searchAttendance, paginateAttendance, searchAttendanceSingle, paginateAttendanceSingle
+import requests
 
 @login_required(login_url='login')
 def attendanceRecords(request):
@@ -49,3 +50,13 @@ def attendanceRecordsSingle(request, pk):
         
     }
     return render(request, 'attendance_management/attendance-records-single.html', context)
+
+API_BASE_URL = 'http://localhost:8000/api/'
+
+def employees(request):
+    response = requests.get(f'{API_BASE_URL}employees/')
+    employees = response.json()
+    context = {
+        'employees': employees,
+    }
+    return render(request, 'attendance_management/employees.html', context)
