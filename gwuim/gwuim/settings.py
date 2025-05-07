@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'audit_logs.apps.AuditLogsConfig',
     'attendance_management.apps.AttendanceManagementConfig',
     'csv_manager.apps.CsvManagerConfig',
+    'vacation.apps.VacationsConfig'
 
     #Third party apps
     'widget_tweaks',
