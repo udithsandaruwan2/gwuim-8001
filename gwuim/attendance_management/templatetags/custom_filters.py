@@ -31,3 +31,7 @@ def get_record_for_day(records, day):
         return records.get(date=day)  # Assuming each record has a unique date
     except Attendance.DoesNotExist:
         return None
+
+from django import template
+register = template.Library()
+
