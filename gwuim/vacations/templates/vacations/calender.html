@@ -1,0 +1,125 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %} <!-- Load the custom filters -->
+
+<style>
+
+
+    .title {
+        margin: 30px 0;
+        font-weight: 700;
+    }
+
+    .calendar {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        grid-gap: 10px;
+        margin: 0 20px;
+    }
+
+    .calendar-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-weight: 700;
+        color: #555;
+    }
+
+    .calendar-body {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-auto-rows: 120px;
+    }
+
+    .calendar-day {
+        background: #fff;
+        border: 1px solid #ddd;
+        position: relative;
+        padding: 5px;
+        overflow: hidden;
+        transition: box-shadow .2s;
+        border-radius: 4px;
+    }
+
+    .calendar-day:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-no-current-month {
+        background: #eee;
+        color: #aaa;
+    }
+
+    .calendar-day time {
+        position: absolute;
+        top: 5px;
+        right: 8px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .events .event {
+        margin-top: 25px;
+        padding: 2px 4px;
+        background: #4285f4;
+        color: #fff;
+        border-radius: 2px;
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .vacation .event {
+        background: #ea4335;
+    }
+
+    .today {
+        border: 2px solid #4285f4;
+    }
+</style>
+
+    <div class="container">
+        <h1 class="title text-center">{{ month_name }} {{ year }}</h1>
+
+        <div class="calendar">
+            <div class="calendar-header">
+                {% comment %} Use day_names list passed in context {% endcomment %}
+                {% for day_name in day_names %}
+                <div>{{ day_name }}</div>
+                {% endfor %}
+            </div>
+            <div class="calendar-body">
+                {% for week in month_days %}
+                {% for day in week %}
+                {% if day == 0 %}
+                <div class="calendar-day calendar-no-current-month"></div>
+                {% else %}
+                {% with vac=vacation_days|get_item:day %}
+                <div
+                    class="calendar-day {% if vac %}vacation{% endif %} {% if day == today.day and month == today.month and year == today.year %}today{% endif %}">
+                    <time datetime="{{ year }}-{{ month|stringformat:" 02d" }}-{{ day|stringformat:"02d" }}">{{ day }}</time>
+                    {% if vac %}
+                    <div class="events">
+                        <div class="event" data-toggle="popover" title="{{ vac.title }}">{{ vac.title }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endwith %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({
+                container: 'body',
+                trigger: 'hover',
+                placement: 'top'
+            });
+        });
+    </script>
