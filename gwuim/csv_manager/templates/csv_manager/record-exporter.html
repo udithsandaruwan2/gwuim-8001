@@ -127,9 +127,9 @@
             return;
         }
 
-        // Redirect to the export URL with parameters
-        const url = `{% url 'export_attendance_pdf' %}?employee_id=${employeeId}&month=${month}&year=${year}`;
-        window.location.href = url;
+        // Open the export URL with parameters in a new tab
+        const url = `{% url 'export_attendance' %}?employee_id=${employeeId}&month=${month}&year=${year}`;
+        window.open(url, '_blank');
     }
 </script>
 
