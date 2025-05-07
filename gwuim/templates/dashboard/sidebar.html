@@ -172,6 +172,38 @@
                 {% endif %}
                 {% endif %}
 
+
+                {% if profile.role.role_name == 'admin' %}
+                {% if page == 'vacations' %}
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Vacation Management</span>
+                </li>
+                <li class="sidebar-item  active selected ">
+                    <a class="sidebar-link" href="{% url 'vacations' %}" aria-expanded="false" style="background-color: #932626;">
+                        <span>
+                            <i class="ti ti-sun"></i>
+                        </span>
+                        <span class="hide-menu">Vacations</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Vacation Management</span>
+                </li>
+                <li class="sidebar-item sidebar-item-n">
+                    <a class="sidebar-link sidebar-link-n" href="{% url 'vacations' %}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-sun"></i>
+                        </span>
+                        <span class="hide-menu hide-menu-n">Vacations</span>
+                    </a>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+
                 
                 {% if profile.role.role_name == 'admin' %}
                 {% if page == 'csv_manager' %}

@@ -11,7 +11,7 @@ urlpatterns = [
     path('', include('audit_logs.urls')),
     path('', include('attendance_management.urls')),
     path('', include('csv_manager.urls')),
-    path('', include('vacation.urls')),
+    path('', include('vacations.urls')),
     
 ]
 

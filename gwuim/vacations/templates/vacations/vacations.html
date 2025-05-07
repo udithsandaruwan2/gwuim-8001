@@ -1,0 +1,126 @@
+{% extends 'dashboard/main.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load custom_filters %} <!-- Load the custom filters -->
+
+{% block content %}
+
+{% include 'dashboard/sidebar.html' %}
+
+<!-- Main wrapper -->
+<div class="body-wrapper">
+
+    {% include 'dashboard/header.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="fw-semibold">Vacation Days</h5>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end gap-2">
+                        <!-- <button class="btn toggle-btn" data-bs-toggle="modal" data-bs-target="#addFacultyModal">
+                            <i class="fas fa-plus"></i> New Faculty
+                        </button>
+                        <button class="btn toggle-btn" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                            <i class="fas fa-plus"></i> New Department
+                        </button>
+                        <button class="btn toggle-btn" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal">
+                            <i class="fas fa-trash"></i> Delete Faculty
+                        </button> -->
+                    </div>
+                </div>
+                <!-- Form for selecting Employee ID and Month -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="row">
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="month">Select Year</label>
+                                        <input type="date" class="form-control me-2" name="date" id="from_date"/>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="emp_id">Reason / Day Title</label>
+                                        <input type="text" class="form-control" id="day_title" name="day_title" placeholder="Enter Day Title" required>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="text-center mt-4">
+                                <button type="button" class="btn toggle-btn" onclick="exportAttendancePDF()">
+                                    <i class="fas fa-calendar-check"></i> Set as vacation day
+                                </button>
+                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <style>
+                    .toggle-btn {
+                        background-color: #932626;
+                        color: #ffffff;
+                        border-color: #932626;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .toggle-btn:hover {
+                        background-color: #ffffff;
+                        color: #932626;
+                        border-color: #932626;
+                    }
+
+                    .toggle-content {
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.5s ease-in-out;
+                    }
+
+                    .toggle-content.show {
+                        max-height: 500px;
+                    }
+
+                    .edit-btn {
+                        transition: opacity 0.5s ease-in-out;
+                    }
+                </style>
+
+                <hr class="mt-5 mb-5">
+
+               
+
+
+
+
+
+
+
+
+
+
+
+                here add th vacation days
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'dashboard/footer.html' %}
+
+</div>
+    
+
+{% endblock content %}
