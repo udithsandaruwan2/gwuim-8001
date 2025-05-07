@@ -12,7 +12,7 @@
 <div class="body-wrapper">
 
     {% include 'dashboard/header.html' %}
-    
+
     <style>
         .table {
             border-radius: 10px;
@@ -20,41 +20,41 @@
             border-collapse: separate;
             border-spacing: 0;
         }
-    
+
         .table th,
         .table td {
             border: 1px solid #dee2e6;
         }
-    
+
         .table thead th:first-child {
             border-top-left-radius: 10px;
         }
-    
+
         .table thead th:last-child {
             border-top-right-radius: 10px;
         }
-    
+
         .table tbody tr:last-child td:first-child {
             border-bottom-left-radius: 10px;
         }
-    
+
         .table tbody tr:last-child td:last-child {
             border-bottom-right-radius: 10px;
         }
+
         .toggle-btn {
-                        background-color: #932626;
-                        color: #ffffff;
-                        border-color: #932626;
-                        transition: all 0.3s ease-in-out;
-                    }
+            background-color: #932626;
+            color: #ffffff;
+            border-color: #932626;
+            transition: all 0.3s ease-in-out;
+        }
 
-                    .toggle-btn:hover {
-                        background-color: #ffffff;
-                        color: #932626;
-                        border-color: #932626;
-                    }
+        .toggle-btn:hover {
+            background-color: #ffffff;
+            color: #932626;
+            border-color: #932626;
+        }
     </style>
-
 
     <div class="container-fluid">
         <div class="row mb-4">
@@ -68,60 +68,87 @@
             </div>
         </div>
 
-        
-
-
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <div id="employee-table-loader">
+                {% include 'loader.html' %}
+            </div>
+
+            <table id="employee-table" class="table table-bordered" style="display: none;">
                 <thead>
                     <tr>
                         <th>Employee Number</th>
                         <th>Name</th>
                         <th>Department Name</th>
                         <th>Gender</th>
-                        
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for employee in employees %}
+                <tbody id="employee-table-body">
+                    <!-- Dynamic rows will be injected here -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    {% include 'dashboard/footer.html' %}
+
+    <div id="data-container"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/employees/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById("employee-table-body");
+                const table = document.getElementById("employee-table");
+                const loader = document.getElementById("employee-table-loader");
+
+                if (loader) loader.style.display = "none";
+                if (table) table.style.display = "table";
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center">No employees found.</td></tr>`;
+                    return;
+                }
+
+                data.forEach(employee => {
+                    const empCode = employee.employee_code ? employee.employee_code : "#";
+                    const row = `
                     <tr>
-                        <td> {% if employee.employee_code %} {{employee.employee_code}} {% else %} # {% endif %} </td>
-                        <td>{{ employee.full_name }}</td>
-                        <td>{{ employee.department.name }}</td>
-                        <td>{{ employee.gender }}</td>
-                        
+                        <td>${empCode}</td>
+                        <td>${employee.full_name}</td>
+                        <td>${employee.department_name}</td>
+                        <td>${employee.gender}</td>
                         <td style="text-align: center;">
                             <div style="display: inline-flex; gap: 16px; align-items: center;">
-                                <a style="color: #932626; text-decoration: none;" href=""
-                                    target="_blank">
+                                <a style="color: #932626; text-decoration: none;" href="#">
                                     <i class="fas fa-info-circle"></i> More
                                 </a>
-                                <a style="color: #932626; text-decoration: none;" href="">
+                                <a style="color: #932626; text-decoration: none;" href="#">
                                     <i class="fas fa-user"></i> Profile
                                 </a>
                             </div>
                         </td>
-
-
                     </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">No employees found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% include 'dashboard/pagination.html' with query_set=employees custom_range=custom_range %}
-        </div>
-
-        
-    </div>
-
-    {% include 'dashboard/footer.html' %}
-    
-
-    <div id="data-container"></div>
-</div>
+                    `;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                console.error("Error loading employee data:", error);
+                const loader = document.getElementById("employee-table-loader");
+                if (loader) {
+                    loader.innerHTML = `<div class="text-danger text-center">Failed to load data.</div>`;
+                }
+            });
+    });
+</script>
 
 {% endblock content %}
