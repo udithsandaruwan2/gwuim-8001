@@ -1,4 +1,7 @@
 from django import template
+from django import template
+from attendance_management.models import Attendance  # Adjust the import as necessary
+
 
 register = template.Library()
 
@@ -18,3 +21,13 @@ def get_value(value):
     if isinstance(value, float) and value.is_integer():
         return int(value)  # Display as an integer if no decimal part
     return value  # Display float with decimals if needed
+
+
+register = template.Library()
+
+@register.filter
+def get_record_for_day(records, day):
+    try:
+        return records.get(date=day)  # Assuming each record has a unique date
+    except Attendance.DoesNotExist:
+        return None

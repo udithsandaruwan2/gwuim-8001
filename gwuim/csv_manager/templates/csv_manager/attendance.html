@@ -1,0 +1,282 @@
+{% extends 'dashboard/main.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="body-wrapper" style="margin: 0; padding: 0;">
+    <div class="container-fluid ">
+
+        <!-- Header Section -->
+<div class="row mb-4 text-center">
+    <div class="col-12">
+        <img src="{% static 'theme_dashboard/assets/images/logos/logo.png' %}" class="logo" width="230" alt="Company Logo" />
+        <h4 class="mt-2">Monthly Attendance Report</h4>
+        <p class="details"><strong>Employee ID:</strong> {{ employee_id }} | <strong>Month:</strong> {{ year }}-{{ month }}</p>
+    </div>
+</div>
+
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center emp-code">Employee Code</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Check In</th>
+                        <th class="text-center">Check Out</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in total_days_in_month %}
+                    <tr>
+                        <td class="text-center">{{ employee_id }}</td>
+                        <td class="text-center">{{ day|date:"Y-m-d" }}</td>
+
+                        {% with record=attendance_records|get_record_for_day:day %}
+                        {% if record %}
+                        <td class="text-center">{{ record.check_in|default:"--" }}</td>
+                        <td class="text-center">{{ record.check_out|default:"--" }}</td>
+                        <td class="text-center">{{ record.status|default:"Absent" }}</td>
+                        {% else %}
+                        <td class="text-center">0:00 a.m.</td>
+                        <td class="text-center">0:00 p.m.</td>
+                        <td class="text-center">Absent</td>
+                        {% endif %}
+                        {% endwith %}
+
+                        <td class="text-center" style="width: 500px;"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-section mb-5 mt-2">
+            <div class="confirmation fs-1 mb-3">
+                I certify from personal knowledge/from the certificates in the relevant files/overleaf that the above
+                services/works were duly authorized and performed and that the payment of Rupees .................... and cents
+                .................... is in accordance with regulations/contract/fair and reasonable.
+            </div>
+        
+            <div class="sign-section">
+                <div class="sign-box">Head of the Department<br />Date</div>
+                <div class="sign-box">Signature of Checking Officer<br />Date</div>
+            </div>
+        
+            <div class="sign-section">
+                <div class="sign-box">Signature and Title of the Officer Certifying Expenditure</div>
+                <div class="sign-box">Date</div>
+            </div>
+        
+            <div class="sign-section">
+                <div class="sign-box">Passed for Payment</div>
+            </div>
+        
+            <div class="sign-section">
+                <div class="sign-box">Date</div>
+                <div class="sign-box">Signature<br />Designation</div>
+            </div>
+        
+            <div class="sign-section">
+                <div class="sign-box">Paid by Cheque No.</div>
+                <div class="sign-box">Paid by Slip<br />Date</div>
+                <div class="sign-box">Signature of Shroff if paid from Petty Cash<br />Date</div>
+            </div>
+        
+            <div class="sign-section mt-5">
+                <div class="sign-box">Signature of Claimant</div>
+                <div class="sign-box">Date</div>
+                <div class="sign-box">Total OT Hours</div>
+                <div class="sign-box">OT Rate</div>
+                <div class="sign-box">Total Rs.</div>
+            </div>
+        
+            <div class="confirmation mt-3">
+                I am personally satisfied that the overtime has been actually and fairly earned.
+            </div>
+        </div>
+
+    
+            <div class="row " style="align-items: center; text-align: center;">
+                <div class="copyright" style="
+              
+                                bottom: 1px;
+                                width: 100%;
+                                    font-size: 5px;
+                        
+                            ">
+                    <div class="footer text-center" style="text-align: center;">
+                        <p class="mb-0 fs-2">&copy; {% now "Y" %} GWUIM. All rights reserved.</p>
+                        <p class="mb-0 fs-2">Design and Developed by <a style="color: #932626;" href="https://udithsandaruwan.me/"
+                                target="_blank" class="pe-1  text-decoration-underline">udithsandaruwan.me</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+      
+        
+    </div>
+</div>
+
+<style>
+
+h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.footer-section {
+    margin-top: 50px;
+}
+
+.confirmation {
+    margin-top: 20px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.sign-section {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+}
+
+.sign-box {
+    width: 40%;
+    border-top: 1px solid #000;
+    text-align: center;
+    padding-top: 5px;
+}
+
+
+
+    .table {
+            border-radius: 10px;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+        }
+
+        .table thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        .table thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        .table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+
+        .table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+@media print {
+
+
+     @page {
+        margin-top: 2cm;
+        margin-right: 1cm;
+        margin-bottom: 1cm;
+        margin-left: 1cm;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+
+    .body-wrapper,
+    .container-fluid {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .table th, .table td {
+        width: 6%;  /* Optimize space for each month column */
+        padding: 2px;  /* Reduce padding for better fit */
+        font-size: 10px; /* Smaller text for compact display */
+        word-wrap: break-word;
+        text-align: center;
+        border: 1px solid #000000;
+    }
+
+    .table th:first-child, .table td:first-child {
+        width: 5%; /* Maintain enough space for 'Leave Types' column */
+    }
+
+    .body-wrapper {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding: 0;
+    }
+
+    .toggle-btn {
+        display: none; /* Hide buttons when printing */
+    }
+    .logo {
+        width: 180px; /* Adjust logo size for print */
+    }
+h4 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.details {
+    font-size: 10px;
+}
+
+/* Target Employee Code (1st column) and Status (5th column) */
+    .table th:nth-child(1),
+    .table td:nth-child(1) {
+        width: 1%; /* Reduced width for Employee Code */
+    }
+    .table th:nth-child(2),
+    .table td:nth-child(2) {
+        width: 2%; /* Reduced width for Status */
+    }
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 1.5%; /* Reduced width for Status */
+    }
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        width: 1.5%; /* Reduced width for Status */
+    }
+
+    .table th:nth-child(5),
+    .table td:nth-child(5) {
+        width: 1%; /* Reduced width for Status */
+    }
+
+}
+
+
+
+
+
+    
+</style>
+{% endblock content %}

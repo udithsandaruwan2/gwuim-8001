@@ -83,3 +83,14 @@ def process_attendance_csv(file_path):
         attendance.save()
 
     print("Attendance data processed successfully!")
+
+import calendar
+from datetime import datetime, timedelta
+
+def get_days_in_month(year, month):
+    # Get the number of days in the month
+    _, num_days = calendar.monthrange(year, month)
+    
+    # Generate a list of date objects for each day of the month
+    days_in_month = [datetime(year, month, day) for day in range(1, num_days + 1)]
+    return days_in_month

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import AttendanceFileForm
-from .utils import process_attendance_csv
+from .utils import process_attendance_csv, get_days_in_month
 from attendance_management.models import Attendance
 import csv
 from django.http import HttpResponse
@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 from attendance_management.models import Attendance
 from users.models import Profile
+from calendar import monthrange
 
 @login_required(login_url='login')
 def importExport(request):
@@ -67,34 +68,33 @@ def recordExporter(request):
     }
     return render(request, 'csv_manager/record-exporter.html', context)
 
-def exportAttendanceAsPdf(request):
+def exportAttendanceView(request):
     id = request.GET.get('employee_id')
-    year = request.GET.get('year')
-    month = request.GET.get('month')
+    year = int(request.GET.get('year'))
+    month = int(request.GET.get('month'))
 
+    # Get all days in the selected month
+    total_days_in_month = get_days_in_month(year, month)
+
+    # Get attendance records
     attendance_records = Attendance.objects.filter(
         employee_id=id,
         date__year=year,
         date__month=month
     ).order_by('date')
 
-    # Absolute static path (URL)
+    # Get logo URL for use in template
     logo_url = request.build_absolute_uri(static('logo.png'))
 
-    html_string = render_to_string('csv_manager/attendance_pdf.html', {
+    return render(request, 'csv_manager/attendance.html', {
         'attendance_records': attendance_records,
         'employee_id': id,
         'year': year,
         'month': month,
-        'logo_url': logo_url,  # Add this to the context
+        'logo_url': logo_url,
+        'total_days_in_month': total_days_in_month,
     })
 
-    # Base URL required to resolve relative static/media paths
-    pdf_file = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf()
-
-    response = HttpResponse(pdf_file, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="attendance_records.pdf"'
-    return response
 
 
 # @login_required
