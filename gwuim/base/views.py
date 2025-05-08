@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from .serializer import VacationSerializer
 from rest_framework.response import Response
 from vacations.models import Vacation
+from .utils import getLeavesPerMonth
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -18,5 +19,6 @@ def getVacationDetails(request):
     """View to retrieve details of a specific employee."""
     vacations = Vacation.objects.all()
     serializer = VacationSerializer(vacations, many=True)
+    print(getLeavesPerMonth(783, 2025))
     return Response(serializer.data)
 
