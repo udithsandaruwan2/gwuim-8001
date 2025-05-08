@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from employees.models import Employee
+from vacations.models import Vacation
 
-class EmployeeSerializer(serializers.ModelSerializer):
-    """Serializer for Employee model."""
+class VacationSerializer(serializers.ModelSerializer):
+    """Serializer for Vacation model."""
     class Meta:
-        model = Employee
-        fields = '__all__'  # Include all fields from the Employee model
+        model = Vacation
+        fields = '__all__'
