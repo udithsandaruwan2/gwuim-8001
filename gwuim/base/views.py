@@ -19,3 +19,4 @@ def getVacationDetails(request):
     vacations = Vacation.objects.all()
     serializer = VacationSerializer(vacations, many=True)
     return Response(serializer.data)
+
