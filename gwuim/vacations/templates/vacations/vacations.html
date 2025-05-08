@@ -35,14 +35,14 @@
                 <!-- Form for selecting Employee ID and Month -->
                 <div class="row mt-4">
                     <div class="col-12">
-                        <form method="POST" action="">
+                        <form method="POST">
                             {% csrf_token %}
                             <div class="row">
                                 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="month">Select Year</label>
-                                        <input type="date" class="form-control me-2" name="date" id="from_date"/>
+                                        <label for="month">Select Date</label>
+                                        <input type="date" class="form-control me-2" name="date_" id="from_date"/>
                                     </div>
                                 </div>
                             
@@ -55,7 +55,7 @@
                             </div>
                 
                             <div class="text-center mt-4">
-                                <button type="button" class="btn toggle-btn" onclick="exportAttendancePDF()">
+                                <button type="submit" class="btn toggle-btn">
                                     <i class="fas fa-calendar-check"></i> Set as vacation day
                                 </button>
                 
@@ -112,12 +112,14 @@
 
 
 
-                {% include 'vacations/calender.html' %}
+                <div class="container">
+                    <div id="calendar-container">
+                        {% include "vacations/calender.html" %}
+                    </div>
+                </div>
+
 
                 
-
-
-
 
 
 
