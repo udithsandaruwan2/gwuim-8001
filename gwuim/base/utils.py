@@ -2,28 +2,35 @@ from vacations.models import Vacation
 from attendance_management.models import Attendance
 from csv_manager.utils import get_days_in_month
 
-def getLeavesPerMonth(id, year):
-    attendance = Attendance.objects.filter(employee_id=id, date__year=year)
+from datetime import datetime
+
+def getLeavesPerMonth(employee_id, year):
+    # Filter only present days
+    attendance_present = Attendance.objects.filter(
+        employee_id=employee_id, 
+        date__year=year,
+        status='present'
+    ).values_list('date', flat=True).order_by('date')
+
+    # All vacation dates in the year
+    vacation_dates = Vacation.objects.filter(
+        date__year=year
+    ).values_list('date', flat=True).order_by('date')
+
+    # Convert to datetime.datetime for comparison
+    attendance_present_set = set(datetime.combine(d, datetime.min.time()) for d in attendance_present)
+    vacation_dates_set = set(datetime.combine(d, datetime.min.time()) for d in vacation_dates)
 
     leave_count = [0] * 12
+    attendance_count = [0] * 12
 
     for month in range(1, 13):
-        # Get all days in the selected month
-        total_days_in_month = get_days_in_month(year, month)
+        days_in_month = get_days_in_month(year, month)  # Returns list of datetime.datetime
+        for current_loop_date in days_in_month:
+            if current_loop_date not in attendance_present_set:
+                if current_loop_date not in vacation_dates_set:
+                    leave_count[month - 1] += 1
+            else:
+                attendance_count[month - 1] += 1
 
-        # Get attendance records for the month
-        records = attendance.filter(date__month=month).order_by('date')
-
-        Vacations = Vacation.objects.filter(date__month=month).order_by('date')
-
-        for date_ in total_days_in_month:
-            # Check if the date is in the records
-            if date_ not in records.values_list('date', flat=True):
-
-                if date_ not in Vacations.values_list('date', flat=True):
-                    # If the date is a vacation, set status to "Vacation"
-                    leave_count[month-1] += 1
-    
-    return leave_count
-            
-
+    return attendance_count, leave_count  # Or return leave_count if needed
