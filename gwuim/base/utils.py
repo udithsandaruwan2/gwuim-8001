@@ -33,4 +33,4 @@ def getLeavesPerMonth(employee_id, year):
             else:
                 attendance_count[month - 1] += 1
 
-    return attendance_count, leave_count  # Or return leave_count if needed
+    return leave_count, attendance_count  # Or return leave_count if needed

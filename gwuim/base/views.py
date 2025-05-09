@@ -21,10 +21,8 @@ def getRoutes(request):
 def getLeaveCount(request, employee_id, year):
     """View to retrieve leave count for a specific employee."""
     attendance_count, leave_count = getLeavesPerMonth(employee_id, year)
-    data = {
-        'attendance_count': attendance_count,
-        'leave_count': leave_count,
-    }
+    data = leave_count
+
     return Response(data)
 
 @api_view(['GET'])
