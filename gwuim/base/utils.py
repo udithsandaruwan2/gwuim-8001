@@ -29,7 +29,6 @@ def getLeavesPerMonth(employee_id, year):
         for current_loop_date in days_in_month:
             if current_loop_date not in attendance_present_set:
                 if current_loop_date not in vacation_dates_set:
-                    print(f"Leave taken on {current_loop_date} for employee {employee_id}")
                     leave_count[month - 1] += 1
             else:
                 attendance_count[month - 1] += 1
