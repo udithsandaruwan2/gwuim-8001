@@ -12,7 +12,7 @@ urlpatterns = [
     path('', include('attendance_management.urls')),
     path('', include('csv_manager.urls')),
     path('', include('vacations.urls')),
-    
+    path('api/', include('base.urls')),
 ]
 
 if settings.DEBUG:

@@ -2,12 +2,8 @@ from django import template
 from django import template
 from attendance_management.models import Attendance  # Adjust the import as necessary
 
-
 register = template.Library()
 
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
 
 @register.filter
 def get_dic_item(dictionary, key):
@@ -22,9 +18,6 @@ def get_value(value):
         return int(value)  # Display as an integer if no decimal part
     return value  # Display float with decimals if needed
 
-
-register = template.Library()
-
 @register.filter
 def get_record_for_day(records, day):
     try:
@@ -32,6 +25,9 @@ def get_record_for_day(records, day):
     except Attendance.DoesNotExist:
         return None
 
-from django import template
-register = template.Library()
-
+@register.filter
+def get_item(dictionary, key):
+    try:
+        return dictionary.get(key)
+    except Exception:
+        return None
