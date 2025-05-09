@@ -19,6 +19,8 @@ def getVacationDetails(request):
     """View to retrieve details of a specific employee."""
     vacations = Vacation.objects.all()
     serializer = VacationSerializer(vacations, many=True)
-    print(getLeavesPerMonth(783, 2025))
+    attendance_count, leave_count = getLeavesPerMonth(783, 2025)
+    print("Attendance Count:", attendance_count)
+    print("Leave Count:", leave_count)
     return Response(serializer.data)
 
