@@ -42,7 +42,7 @@
         {% if query_set.has_previous %}
 
         <li class="page-item m-1">
-            <a class="page-link" href="?page={{query_set.previous_page_number}}&search={{search_query}}"
+            <a class="page-link" href="?page={{query_set.previous_page_number}}&search={{search_query}}{% if request.GET.from_date %}&from_date={{request.GET.from_date}}{% endif %}{% if request.GET.to_date %}&to_date={{request.GET.to_date}}{% endif %}"
                 data-page="{{query_set.previous_page_number}}">Prev</a>
         </li>
 
@@ -58,12 +58,12 @@
 
         {% if page == query_set.number %}
 
-        <li class="page-item m-1 active"><a class="page-link" href="?page={{page}}&search={{search_query}}" data-page="{{page}}">{{page}}</a>
+        <li class="page-item m-1 active"><a class="page-link" href="?page={{page}}&search={{search_query}}{% if request.GET.from_date %}&from_date={{request.GET.from_date}}{% endif %}{% if request.GET.to_date %}&to_date={{request.GET.to_date}}{% endif %}" data-page="{{page}}">{{page}}</a>
         </li>
 
         {% else %}
 
-        <li class="page-item m-1"><a class="page-link" href="?page={{page}}&search={{search_query}}" data-page="{{page}}">{{page}}</a></li>
+        <li class="page-item m-1"><a class="page-link" href="?page={{page}}&search={{search_query}}{% if request.GET.from_date %}&from_date={{request.GET.from_date}}{% endif %}{% if request.GET.to_date %}&to_date={{request.GET.to_date}}{% endif %}" data-page="{{page}}">{{page}}</a></li>
 
         {% endif %}
 
@@ -72,7 +72,7 @@
         {% if query_set.has_next %}
 
         <li class="page-item m-1">
-            <a class="page-link" href="?page={{query_set.next_page_number}}&search={{search_query}}"
+            <a class="page-link" href="?page={{query_set.next_page_number}}&search={{search_query}}{% if request.GET.from_date %}&from_date={{request.GET.from_date}}{% endif %}{% if request.GET.to_date %}&to_date={{request.GET.to_date}}{% endif %}"
                 data-page="{{query_set.next_page_number}}">Next</a>
         </li>
 
