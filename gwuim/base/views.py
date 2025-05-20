@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from .serializer import VacationSerializer, LeaveCountSerializer
 from rest_framework.response import Response
 from vacations.models import Vacation
-from .utils import getLeavesPerMonth
+from .utils import getLeavesPerMonth, getAttendanceCountperMonth
 from rest_framework import serializers
 
 @api_view(['GET'])
@@ -11,7 +11,8 @@ def getRoutes(request):
     """View to display available API routes."""
     routes = [
         'api/vacations/',
-        'api/employees/<str:pk>/',
+        'api/employees/<str:employee_id>/<int:year>/',
+        'api/employees/<str:employee_id>/<int:year>/<int:month>/',
     ]
     return Response(routes)
 
@@ -32,3 +33,10 @@ def getVacationDetails(request):
     serializer = VacationSerializer(vacations, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getAttendanceCount(request, employee_id, year, month):
+    """View to retrieve attendance count for a specific employee."""
+    # Assuming you have a function to get attendance count
+    attendance_count =getAttendanceCountperMonth(employee_id, year, month)
+    data = attendance_count
+    return Response(data)
