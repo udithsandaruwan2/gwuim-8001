@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'csv_manager.apps.CsvManagerConfig',
     'vacations.apps.VacationsConfig',
     'base.apps.BaseConfig',
+    'time_management.apps.TimeManagementConfig',
 
     #Third party apps
     'widget_tweaks',
