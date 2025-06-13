@@ -28,6 +28,15 @@ class EmployeeWorkSchedule(models.Model):
     # Short Leave Evening
     short_leave_evening_start = models.TimeField(null=True, blank=True)
     short_leave_evening_end = models.TimeField(null=True, blank=True)
+
+    # Half Leave Morning
+    half_leave_morning_start = models.TimeField(null=True, blank=True)
+    half_leave_morning_end = models.TimeField(null=True, blank=True)
+
+    # Half Leave Evening
+    half_leave_evening_start = models.TimeField(null=True, blank=True)
+    half_leave_evening_end = models.TimeField(null=True, blank=True)
+
     # Common fields
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)

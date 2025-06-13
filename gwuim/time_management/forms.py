@@ -26,7 +26,9 @@ class EmployeeWorkScheduleForm(forms.ModelForm):
             'late_in_start', 'late_in_end',
             'covering_start', 'covering_end',
             'short_leave_morning_start', 'short_leave_morning_end',
-            'short_leave_evening_start', 'short_leave_evening_end'
+            'short_leave_evening_start', 'short_leave_evening_end',
+            'half_leave_morning_start', 'half_leave_morning_end',
+            'half_leave_evening_start', 'half_leave_evening_end',
         ]
         widgets = {
             key: forms.TimeInput(attrs={'type': 'time'})
@@ -37,6 +39,8 @@ class EmployeeWorkScheduleForm(forms.ModelForm):
                 'covering_start', 'covering_end',
                 'short_leave_morning_start', 'short_leave_morning_end',
                 'short_leave_evening_start', 'short_leave_evening_end',
+                'half_leave_morning_start', 'half_leave_morning_end',
+                'half_leave_evening_start', 'half_leave_evening_end',
             ]
         }
 

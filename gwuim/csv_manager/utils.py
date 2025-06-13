@@ -5,6 +5,22 @@ from datetime import time as dtime
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from attendance_management.models import Attendance  # Adjust with your actual app name
+from gwuim.settings import API_BASE_URL
+import requests
+
+def getTitleList():
+    """
+    Fetches the list of employee titles from the API.
+    Returns a dictionary mapping title names to their UIDs.
+    """
+    try:
+        response = requests.get(f'{API_BASE_URL}titles/', timeout=5)
+        response.raise_for_status()
+        titles = response.json()
+        return titles
+    except requests.RequestException as e:
+        print(f"Error fetching titles: {e}")
+    return {}
 
 def process_attendance_csv(file_path):
     """
@@ -130,3 +146,4 @@ def get_days_in_month(year, month):
     # Generate a list of date objects for each day of the month
     days_in_month = [datetime(year, month, day) for day in range(1, num_days + 1)]
     return days_in_month
+
