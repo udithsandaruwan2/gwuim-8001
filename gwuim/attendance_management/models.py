@@ -12,6 +12,12 @@ class Attendance(models.Model):
     check_in = models.TimeField(null=True, blank=True)
     check_out = models.TimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    # Additional fields can be added as needed, e.g., for leave types, reasons, etc.
+    is_late = models.BooleanField(default=False)  # To track if the employee is late
+    is_early = models.BooleanField(default=False)  # To track if the employee leaves early
+    is_short_leave = models.BooleanField(default=False)  # To track if the employee takes a short leave
+    is_half_day_leave = models.BooleanField(default=False)  # To track if the employee takes a half day
+    
     # Common fields
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -7,6 +7,7 @@ from django.conf import settings
 from attendance_management.models import Attendance  # Adjust with your actual app name
 from gwuim.settings import API_BASE_URL
 import requests
+from time_management.models import EmployeeWorkSchedule  # Adjust with your actual app name
 
 def getTitleList():
     """
@@ -20,6 +21,20 @@ def getTitleList():
         return titles
     except requests.RequestException as e:
         print(f"Error fetching titles: {e}")
+    return {}
+
+def getEmployeeList():
+    """
+    Fetches the list of employees from the API.
+    Returns a dictionary mapping employee names to their UIDs.
+    """
+    try:
+        response = requests.get(f'{API_BASE_URL}employees/', timeout=5)
+        response.raise_for_status()
+        employees = response.json()
+        return employees
+    except requests.RequestException as e:
+        print(f"Error fetching employees: {e}")
     return {}
 
 def process_attendance_csv(file_path):
@@ -114,7 +129,9 @@ def process_attendance_csv(file_path):
 
 
 
-
+    employee_list = getEmployeeList()
+    title_list = getTitleList()
+    employee_work_schedule = EmployeeWorkSchedule.objects.all()
     # Save to the database
     for key, data in attendance_records.items():
         attendance, created = Attendance.objects.get_or_create(
@@ -122,6 +139,30 @@ def process_attendance_csv(file_path):
             date=data["date"],
             defaults={"check_in": data["check_in"], "check_out": data["check_out"]},
         )
+
+        
+        employee_data = next((item for item in employee_list if item['employee_code'] == data["employee_id"]), None)
+        if employee_data['title_uid']:
+            title_data = next((item for item in title_list if item['uid'] == employee_data['title_uid']), None)
+            schedule_data = next((item for item in employee_work_schedule if item.employee_title_uid == employee_data['title_uid']), None)
+            if schedule_data:
+                if data["check_in"] and schedule_data.official_start and data["check_in"] > schedule_data.official_start:
+                    #late
+                    attendance.is_late = True
+                    attendance.is_early = False
+                    if not schedule_data.relief_start <= data["check_in"] <= schedule_data.relief_end:
+                    #late but not also within relief period
+                        if schedule_data.late_in_start and schedule_data.late_in_start <= data["check_in"] <= schedule_data.late_in_end:
+                        #late but within late in period
+                            
+                        
+
+                elif data["check_in"] and schedule_data.late_in_start and data["check_in"] <= schedule_data.late_in_start:
+                    #on time
+                    attendance.is_late = False
+                    attendance.is_early = True
+                else:
+                    continue
 
         # If record already exists, update check-in or check-out
         if not created:
@@ -133,6 +174,8 @@ def process_attendance_csv(file_path):
         # Set status
         attendance.status = "Present" if attendance.check_in and attendance.check_out else "Pending"
         attendance.save()
+
+
 
     print("Attendance data processed successfully!")
 
