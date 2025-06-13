@@ -1,0 +1,54 @@
+<form method="POST">
+    {% csrf_token %}
+
+    <label for="{{ form.employee_title.id_for_label }}">Employee Title:</label>
+    {{ form.employee_title }}
+
+    <hr>
+
+    <h4>Official Work Period</h4>
+    <label for="{{ form.official_start.id_for_label }}">Start:</label>
+    {{ form.official_start }}
+
+    <label for="{{ form.official_end.id_for_label }}">End:</label>
+    {{ form.official_end }}
+
+    <h4>Relief / Break Period</h4>
+    <label for="{{ form.relief_start.id_for_label }}">Start:</label>
+    {{ form.relief_start }}
+
+    <label for="{{ form.relief_end.id_for_label }}">End:</label>
+    {{ form.relief_end }}
+
+    <h4>Late Arrival Grace Period</h4>
+    <label for="{{ form.late_in_start.id_for_label }}">Start:</label>
+    {{ form.late_in_start }}
+
+    <label for="{{ form.late_in_end.id_for_label }}">End:</label>
+    {{ form.late_in_end }}
+
+    <h4>Covering Time</h4>
+    <label for="{{ form.covering_start.id_for_label }}">Start:</label>
+    {{ form.covering_start }}
+
+    <label for="{{ form.covering_end.id_for_label }}">End:</label>
+    {{ form.covering_end }}
+
+    <h4>Short Leave - Morning</h4>
+    <label for="{{ form.short_leave_morning_start.id_for_label }}">Start:</label>
+    {{ form.short_leave_morning_start }}
+
+    <label for="{{ form.short_leave_morning_end.id_for_label }}">End:</label>
+    {{ form.short_leave_morning_end }}
+
+    <h4>Short Leave - Evening</h4>
+    <label for="{{ form.short_leave_evening_start.id_for_label }}">Start:</label>
+    {{ form.short_leave_evening_start }}
+
+    <label for="{{ form.short_leave_evening_end.id_for_label }}">End:</label>
+    {{ form.short_leave_evening_end }}
+
+    <br><br>
+    <button type="submit">Save Schedule</button>
+</form>
+

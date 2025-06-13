@@ -4,6 +4,7 @@ from .models import Attendance
 from .utils import searchAttendance, paginateAttendance, searchAttendanceSingle, paginateAttendanceSingle
 import requests
 from django.http import JsonResponse
+from gwuim.settings import API_BASE_URL
 
 @login_required(login_url='login')
 def attendanceRecords(request):
@@ -67,8 +68,7 @@ def employees(request):
     }
     return render(request, 'attendance_management/employees.html', context)
 
-
-API_BASE_URL = 'http://localhost:8000/api/'  # replace with your actual base URL
+  # replace with your actual base URL
 
 def getEmployees(request):
     try:

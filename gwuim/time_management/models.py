@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 
 class EmployeeWorkSchedule(models.Model):
+    employee_title_uid = models.CharField(max_length=100, null=True, blank=True)
     employee_title = models.CharField(max_length=100, null=True, blank=True)
 
     # Official Work Period
@@ -38,3 +39,4 @@ class EmployeeWorkSchedule(models.Model):
 
     def __str__(self):
         return f"{self.employee_title}'s schedule"
+

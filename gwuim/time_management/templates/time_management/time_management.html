@@ -1,0 +1,9 @@
+<a href="{% url 'time_management_add' %}">Add New Schedule</a>
+<ul>
+    {% for title_schedule in title_schedules %}
+        <li>
+            {{ title_schedule.employee_title }}: <a href="{% url 'time_management_update' title_schedule.uid %}">Edit</a> |
+            <a href="{% url 'time_management_delete' title_schedule.uid %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
