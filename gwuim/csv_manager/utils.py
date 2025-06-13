@@ -152,10 +152,12 @@ def process_attendance_csv(file_path):
                     attendance.is_early = False
                     if not schedule_data.relief_start <= data["check_in"] <= schedule_data.relief_end:
                     #late but not also within relief period
-                        if schedule_data.late_in_start and schedule_data.late_in_start <= data["check_in"] <= schedule_data.late_in_end:
+                        if schedule_data.late_in_start <= data["check_in"] <= schedule_data.late_in_end:
                         #late but within late in period
-                            
-                        
+                            if title_data["late_count"] != 0:
+                                title_data["late_count"] -= 1
+                            else:
+                                attendance.is_half_day = True
 
                 elif data["check_in"] and schedule_data.late_in_start and data["check_in"] <= schedule_data.late_in_start:
                     #on time
