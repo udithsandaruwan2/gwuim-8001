@@ -85,8 +85,11 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <button type="button" class="btn toggle-btn" onclick="exportAttendancePDF()">
-                            <i class="fas fa-file-pdf"></i> Export attendance as PDF
+                        <button type="button" class="btn toggle-btn" onclick="exportAttendance()">
+                            <i class="fas fa-file-excel" style="margin-right: 5px;"></i> Attendance Summary
+                        </button>
+                        <button type="button" class="btn toggle-btn" onclick="exportOverTimeForm()">
+                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i> Over Time Form
                         </button>
 
                     </div>
@@ -117,7 +120,7 @@
 </div>
 
 <script>
-    function exportAttendancePDF() {
+    function exportOverTimeForm() {
         const employeeId = document.getElementById('employee_id').value;
         const month = document.getElementById('month').value;
         const year = document.getElementById('year').value;
@@ -131,6 +134,20 @@
         const url = `{% url 'export_attendance' %}?employee_id=${employeeId}&month=${month}&year=${year}`;
         window.open(url, '_blank');
     }
+    function exportAttendance() {
+            const employeeId = document.getElementById('employee_id').value;
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+
+            if (!employeeId || !month || !year) {
+                alert("Please fill in all fields before exporting.");
+                return;
+            }
+
+            // Open the export URL with parameters in a new tab
+            const url = `{% url 'export_attendance_summary' %}?employee_id=${employeeId}&month=${month}&year=${year}`;
+            window.open(url, '_blank');
+        }
 </script>
 
 
