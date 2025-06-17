@@ -132,29 +132,23 @@ def process_attendance_csv(file_path):
                                 leave_balance.late_count -= 1
                             elif leave_balance.short_leave_balance > 0:
                                 leave_balance.short_leave_balance -= 1
-                                leave_balance.leave_type = 'short'
                                 attendance.is_short_leave = True
                             else:
                                 leave_balance.half_leave_count += 1
-                                leave_balance.leave_type = 'half'
                                 attendance.is_half_day_leave = True
                             leave_balance.save()
 
                         elif schedule_data.short_leave_morning_start <= data["check_in"] <= schedule_data.short_leave_morning_end:
                             if leave_balance.short_leave_balance > 0:
                                 leave_balance.short_leave_balance -= 1
-                                leave_balance.leave_type = 'short'
                                 attendance.is_short_leave = True
                             else:
                                 leave_balance.half_leave_count += 1
-                                leave_balance.leave_type = 'half'
                                 attendance.is_half_day_leave = True
                             leave_balance.save()
 
                         elif schedule_data.half_leave_morning_start <= data["check_in"] <= schedule_data.half_leave_morning_end:
                             leave_balance.half_leave_count += 1
-                            leave_balance.leave_type = 'half'
-                            attendance.is_half_day_leave = True
                             leave_balance.save()
                 elif schedule_data.late_in_start and data["check_in"] <= schedule_data.late_in_start:
                     attendance.is_late = False
@@ -168,7 +162,7 @@ def process_attendance_csv(file_path):
                         year=data["date"].year,
                         month=data["date"].month
                     )
-                    if leave_balance.short_leave_balance != 0:
+                    if leave_balance.short_leave_balance > 0:
                         leave_balance.short_leave_balance -= 1
                     else:
                         attendance.is_half_day_leave = True
