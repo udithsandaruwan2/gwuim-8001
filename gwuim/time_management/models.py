@@ -49,3 +49,27 @@ class EmployeeWorkSchedule(models.Model):
     def __str__(self):
         return f"{self.employee_title}'s schedule"
 
+class LeaveBalance(models.Model):
+    TYPES = [
+        ('short', 'Short Leave'),
+        ('half', 'Half Day Leave')
+    ]
+    employee_id = models.IntegerField(null=True, blank=True)  # Store employee ID from API
+    late_count = models.IntegerField(default=5, null=True, blank=True)  # Count of late arrivals
+    late_count_covered = models.IntegerField(default=0, null=True, blank=True)  # Count of late arrivals covered
+    leave_type = models.CharField(max_length=50, null=True, blank=True, choices=TYPES)  # Type of leave (e.g., sick, vacation)
+    short_leave_balance = models.IntegerField(default=2, null=True, blank=True)  # Remaining short leave balance
+    half_leave_count = models.IntegerField(default=0, null=True, blank=True)  # Remaining half leave count
+    year = models.IntegerField(null=True, blank=True)  # Year for which the leave balance is applicable
+    month = models.IntegerField(null=True, blank=True)  # Month for which the leave balance is applicable
+    # Common fields
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Leave Balance"
+        verbose_name_plural = "Leave Balances"
+
+    def __str__(self):
+        return f"Leave Balance for Employee {self.employee_id} - {self.leave_type}"
