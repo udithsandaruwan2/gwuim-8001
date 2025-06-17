@@ -57,6 +57,7 @@ class LeaveBalance(models.Model):
     employee_id = models.IntegerField(null=True, blank=True)  # Store employee ID from API
     late_count = models.IntegerField(default=5, null=True, blank=True)  # Count of late arrivals
     late_count_covered = models.IntegerField(default=0, null=True, blank=True)  # Count of late arrivals covered
+    is_late_covered_totally = models.BooleanField(default=False, null=True)  # Flag to indicate if late arrivals are covered
     leave_type = models.CharField(max_length=50, null=True, blank=True, choices=TYPES)  # Type of leave (e.g., sick, vacation)
     short_leave_balance = models.IntegerField(default=2, null=True, blank=True)  # Remaining short leave balance
     half_leave_count = models.IntegerField(default=0, null=True, blank=True)  # Remaining half leave count
@@ -70,6 +71,11 @@ class LeaveBalance(models.Model):
     class Meta:
         verbose_name = "Leave Balance"
         verbose_name_plural = "Leave Balances"
+
+    def save(self, *args, **kwargs):
+        if self.late_count_covered >= 3:
+            self.is_late_covered_totally = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Leave Balance for Employee {self.employee_id} - {self.leave_type}"
