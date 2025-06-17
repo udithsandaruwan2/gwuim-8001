@@ -28,6 +28,15 @@ class EmployeeWorkSchedule(models.Model):
     # Short Leave Evening
     short_leave_evening_start = models.TimeField(null=True, blank=True)
     short_leave_evening_end = models.TimeField(null=True, blank=True)
+
+    # Half Leave Morning
+    half_leave_morning_start = models.TimeField(null=True, blank=True)
+    half_leave_morning_end = models.TimeField(null=True, blank=True)
+
+    # Half Leave Evening
+    half_leave_evening_start = models.TimeField(null=True, blank=True)
+    half_leave_evening_end = models.TimeField(null=True, blank=True)
+
     # Common fields
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,3 +49,33 @@ class EmployeeWorkSchedule(models.Model):
     def __str__(self):
         return f"{self.employee_title}'s schedule"
 
+class LeaveBalance(models.Model):
+    TYPES = [
+        ('short', 'Short Leave'),
+        ('half', 'Half Day Leave')
+    ]
+    employee_id = models.IntegerField(null=True, blank=True)  # Store employee ID from API
+    late_count = models.IntegerField(default=5, null=True, blank=True)  # Count of late arrivals
+    late_count_covered = models.IntegerField(default=0, null=True, blank=True)  # Count of late arrivals covered
+    is_late_covered_totally = models.BooleanField(default=False, null=True)  # Flag to indicate if late arrivals are covered
+    leave_type = models.CharField(max_length=50, null=True, blank=True, choices=TYPES)  # Type of leave (e.g., sick, vacation)
+    short_leave_balance = models.IntegerField(default=2, null=True, blank=True)  # Remaining short leave balance
+    half_leave_count = models.IntegerField(default=0, null=True, blank=True)  # Remaining half leave count
+    year = models.IntegerField(null=True, blank=True)  # Year for which the leave balance is applicable
+    month = models.IntegerField(null=True, blank=True)  # Month for which the leave balance is applicable
+    # Common fields
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Leave Balance"
+        verbose_name_plural = "Leave Balances"
+
+    def save(self, *args, **kwargs):
+        if self.late_count_covered >= 3:
+            self.is_late_covered_totally = True
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Leave Balance for Employee {self.employee_id} - {self.leave_type}"

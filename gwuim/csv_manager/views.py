@@ -37,6 +37,7 @@ def importExport(request):
             messages.error(request, 'Invalid form submission. Please try again.')
     else:
         form = AttendanceFileForm()  # Initialize the form for GET request
+    
         
 
     context = {
@@ -95,6 +96,32 @@ def exportAttendanceView(request):
         'total_days_in_month': total_days_in_month,
     })
 
+def exportAttendanceSummaryView(request):
+    id = request.GET.get('employee_id')
+    year = int(request.GET.get('year'))
+    month = int(request.GET.get('month'))
+
+    # Get all days in the selected month
+    total_days_in_month = get_days_in_month(year, month)
+
+    # Get attendance records
+    attendance_records = Attendance.objects.filter(
+        employee_id=id,
+        date__year=year,
+        date__month=month
+    ).order_by('date')
+
+    # Get logo URL for use in template
+    logo_url = request.build_absolute_uri(static('logo.png'))
+
+    return render(request, 'csv_manager/attendance_summary.html', {
+        'attendance_records': attendance_records,
+        'employee_id': id,
+        'year': year,
+        'month': month,
+        'logo_url': logo_url,
+        'total_days_in_month': total_days_in_month,
+    })
 
 
 # @login_required

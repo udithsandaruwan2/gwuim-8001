@@ -6,6 +6,8 @@ from .forms import EmployeeWorkScheduleForm
 import requests
 from gwuim.settings import API_BASE_URL
 
+
+
 def timeManagement(request):
     """
     Render the time management page with a list of work schedules.
