@@ -3,6 +3,7 @@ from attendance_management.models import Attendance
 from csv_manager.utils import get_days_in_month
 from calendar import monthrange
 from datetime import datetime
+from time_management.models import LeaveBalance
 
 def getLeavesPerMonth(employee_id, year):
     # Filter only present days
@@ -65,3 +66,13 @@ def getAttendanceCountperMonth(employee_id, year, month):
     )
 
     return attendance_count
+
+def getOtherLeavesCount(employee_id, year, month):
+    # Get leave records for the employee for the specified month
+    leave_count = LeaveBalance.objects.filter(
+        employee_id=employee_id,
+        year=year,
+        month=month
+    )
+
+    return leave_count

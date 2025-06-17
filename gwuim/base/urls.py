@@ -6,4 +6,5 @@ urlpatterns = [
     path("vacations/", views.getVacationDetails, name="api_vacations"),
     path("employees/<str:employee_id>/<int:year>/", views.getLeaveCount, name="api_leave_count"),
     path("employees/<str:employee_id>/<int:year>/<int:month>/", views.getAttendanceCount, name="api_attendance_count"),
+    path("employees/<str:employee_id>/<int:year>/<int:month>/other-leaves/", views.getOtherLeaveCountDetails, name="api_other_leave_count"),
 ]

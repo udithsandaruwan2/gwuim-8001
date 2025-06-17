@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .serializer import VacationSerializer, LeaveCountSerializer
+from .serializer import LeaveBalanceSerializer, VacationSerializer, LeaveCountSerializer
 from rest_framework.response import Response
 from vacations.models import Vacation
-from .utils import getLeavesPerMonth, getAttendanceCountperMonth
+from .utils import getLeavesPerMonth, getAttendanceCountperMonth, getOtherLeavesCount
 from rest_framework import serializers
 
 @api_view(['GET'])
@@ -13,6 +13,7 @@ def getRoutes(request):
         'api/vacations/',
         'api/employees/<str:employee_id>/<int:year>/',
         'api/employees/<str:employee_id>/<int:year>/<int:month>/',
+        'api/employees/<str:employee_id>/<int:year>/<int:month>/other-leaves/',
     ]
     return Response(routes)
 
@@ -40,3 +41,10 @@ def getAttendanceCount(request, employee_id, year, month):
     attendance_count =getAttendanceCountperMonth(employee_id, year, month)
     data = attendance_count
     return Response(data)
+
+@api_view(['GET'])
+def getOtherLeaveCountDetails(request, employee_id, year, month):
+    """View to retrieve other leave count for a specific employee."""
+    other_leave_count = getOtherLeavesCount(employee_id, year, month)
+    serializer = LeaveBalanceSerializer(other_leave_count, many=True)
+    return Response(serializer.data)
