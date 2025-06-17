@@ -62,41 +62,6 @@ def process_attendance_csv(file_path):
 
         print("Detected Delimiter:", dialect.delimiter)
 
-        # for row in reader:
-        #     employee_id = row["AC-No."].strip()
-        #     timestamp_str = row["Time"].strip()
-        #     new_state = row["New State"].strip()
-        #     exception = row["Exception"].strip()
-
-        #     # # Skip invalid records
-        #     # if exception == "Invalid" or exception != "FOT":
-        #     #     continue
-
-        #     # Convert timestamp to date and time
-        #     timestamp = datetime.strptime(timestamp_str, "%m/%d/%Y %H:%M")
-        #     date = timestamp.date()
-        #     time = timestamp.time()
-
-        #     # Unique key for each employee per day
-        #     record_key = (employee_id, date)
-
-        #     # Check if the record exists in our dictionary
-        #     if record_key not in attendance_records:
-        #         attendance_records[record_key] = {
-        #             "employee_id": employee_id,
-        #             "date": date,
-        #             "check_in": None,
-        #             "check_out": None,
-        #         }
-
-        #     # Assign check-in or check-out based on New State
-        #     if "OverTime In" in new_state:
-        #         attendance_records[record_key]["check_in"] = time
-        #     elif "OverTime Out" in new_state:
-        #         attendance_records[record_key]["check_out"] = time
-
-
-
 
 
         for row in reader:
