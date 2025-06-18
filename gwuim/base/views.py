@@ -38,7 +38,7 @@ def getVacationDetails(request):
 def getAttendanceCount(request, employee_id, year, month):
     """View to retrieve attendance count for a specific employee."""
     # Assuming you have a function to get attendance count
-    attendance_count =getAttendanceCountperMonth(employee_id, year, month)
+    attendance_count = getAttendanceCountperMonth(employee_id, year, month)
     data = attendance_count
     return Response(data)
 
