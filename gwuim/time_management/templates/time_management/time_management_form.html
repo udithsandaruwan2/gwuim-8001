@@ -1,68 +1,212 @@
-<form method="POST">
-    {% csrf_token %}
+{% extends 'dashboard/main.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
-    <label for="{{ form.employee_title.id_for_label }}">Employee Title:</label>
-    {{ form.employee_title }}
+{% block content %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
 
-    <hr>
+    .leave-card {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-    <h4>Official Work Period</h4>
-    <label for="{{ form.official_start.id_for_label }}">Start:</label>
-    {{ form.official_start }}
+    .btn-cancel,
+    .btn-update {
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
 
-    <label for="{{ form.official_end.id_for_label }}">End:</label>
-    {{ form.official_end }}
+    .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+    }
 
-    <h4>Relief / Break Period</h4>
-    <label for="{{ form.relief_start.id_for_label }}">Start:</label>
-    {{ form.relief_start }}
+    .btn-update {
+        background-color: #932626;
+        color: white;
+        border: none;
+    }
 
-    <label for="{{ form.relief_end.id_for_label }}">End:</label>
-    {{ form.relief_end }}
+    .btn-cancel:hover {
+        color: #5a6268;
+        background-color: #fff;
+        border: 1px solid #5a6268;
+    }
 
-    <h4>Late Arrival Grace Period</h4>
-    <label for="{{ form.late_in_start.id_for_label }}">Start:</label>
-    {{ form.late_in_start }}
+    .btn-update:hover {
+        color: #932626;
+        background-color: #fff;
+        border: 1px solid #932626;
+    }
 
-    <label for="{{ form.late_in_end.id_for_label }}">End:</label>
-    {{ form.late_in_end }}
+    form label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
 
-    <h4>Covering Time</h4>
-    <label for="{{ form.covering_start.id_for_label }}">Start:</label>
-    {{ form.covering_start }}
+    .form-section {
+        margin-bottom: 30px;
+    }
 
-    <label for="{{ form.covering_end.id_for_label }}">End:</label>
-    {{ form.covering_end }}
+    hr {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+</style>
 
-    <h4>Short Leave - Morning</h4>
-    <label for="{{ form.short_leave_morning_start.id_for_label }}">Start:</label>
-    {{ form.short_leave_morning_start }}
+<div class="leave-card">
+    <h4 class="text-center mb-4">Add/Update Schedules</h4>
 
-    <label for="{{ form.short_leave_morning_end.id_for_label }}">End:</label>
-    {{ form.short_leave_morning_end }}
+    <form method="POST">
+        {% csrf_token %}
 
-    <h4>Short Leave - Evening</h4>
-    <label for="{{ form.short_leave_evening_start.id_for_label }}">Start:</label>
-    {{ form.short_leave_evening_start }}
+        <div class="form-section">
+            <label for="{{ form.employee_title.id_for_label }}">Employee Title:</label>
+            {% render_field form.employee_title class="form-control mt-2 edit-input" %}
+        </div>
 
-    <label for="{{ form.short_leave_evening_end.id_for_label }}">End:</label>
-    {{ form.short_leave_evening_end }}
+        <hr>
 
-    <h4>Half Leave - Morning</h4>
-    <label for="{{ form.half_leave_morning_start.id_for_label }}">Start:</label>
-    {{ form.half_leave_morning_start }}
+        <div class="form-section">
+            <label>Official Work Period</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.official_start.id_for_label }}">Start:</label>
+                    {% render_field form.official_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.official_end.id_for_label }}">End:</label>
+                    {% render_field form.official_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
 
-    <label for="{{ form.half_leave_morning_end.id_for_label }}">End:</label>
-    {{ form.half_leave_morning_end }}
+        <hr>
 
-    <h4>Half Leave - Evening</h4>
-    <label for="{{ form.half_leave_evening_start.id_for_label }}">Start:</label>
-    {{ form.half_leave_evening_start }}
+        <div class="form-section">
+            <label>Relief / Break Period</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.relief_start.id_for_label }}">Start:</label>
+                    {% render_field form.relief_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.relief_end.id_for_label }}">End:</label>
+                    {% render_field form.relief_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
 
-    <label for="{{ form.half_leave_evening_end.id_for_label }}">End:</label>
-    {{ form.half_leave_evening_end }}
+        <hr>
 
-    <br><br>
-    <button type="submit">Save Schedule</button>
-</form>
+        <div class="form-section">
+            <label>Late Arrival Grace Period</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.late_in_start.id_for_label }}">Start:</label>
+                    {% render_field form.late_in_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.late_in_end.id_for_label }}">End:</label>
+                    {% render_field form.late_in_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
 
+        <hr>
+
+        <div class="form-section">
+            <label>Covering Time</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.covering_start.id_for_label }}">Start:</label>
+                    {% render_field form.covering_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.covering_end.id_for_label }}">End:</label>
+                    {% render_field form.covering_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-section">
+            <label>Short Leave - Morning</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.short_leave_morning_start.id_for_label }}">Start:</label>
+                    {% render_field form.short_leave_morning_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.short_leave_morning_end.id_for_label }}">End:</label>
+                    {% render_field form.short_leave_morning_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-section">
+            <label>Short Leave - Evening</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.short_leave_evening_start.id_for_label }}">Start:</label>
+                    {% render_field form.short_leave_evening_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.short_leave_evening_end.id_for_label }}">End:</label>
+                    {% render_field form.short_leave_evening_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-section">
+            <label>Half Leave - Morning</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.half_leave_morning_start.id_for_label }}">Start:</label>
+                    {% render_field form.half_leave_morning_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.half_leave_morning_end.id_for_label }}">End:</label>
+                    {% render_field form.half_leave_morning_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-section">
+            <label>Half Leave - Evening</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ form.half_leave_evening_start.id_for_label }}">Start:</label>
+                    {% render_field form.half_leave_evening_start class="form-control mt-2 edit-input" %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.half_leave_evening_end.id_for_label }}">End:</label>
+                    {% render_field form.half_leave_evening_end class="form-control mt-2 edit-input" %}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="javascript:window.history.back();" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-update">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

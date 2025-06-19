@@ -1,9 +1,92 @@
-<a href="{% url 'time_management_add' %}">Add New Schedule</a>
-<ul>
-    {% for title_schedule in title_schedules %}
-        <li>
-            {{ title_schedule.employee_title }}: <a href="{% url 'time_management_update' title_schedule.uid %}">Edit</a> |
-            <a href="{% url 'time_management_delete' title_schedule.uid %}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+{% extends 'dashboard/main.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+{% include 'dashboard/sidebar.html' %}
+
+<!-- Main wrapper -->
+<div class="body-wrapper">
+
+    {% include 'dashboard/header.html' %}
+
+    <div class="container-fluid">
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="fw-semibold">Time Schedules</h5>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end gap-2">
+                        <a href="{% url 'time_management_add' %}" class="btn toggle-btn">
+                            <i class="fas fa-plus"></i> Add New Schedule
+                        </a>
+                    </div>
+                </div>
+        
+                <style>
+                    .toggle-btn {
+                        background-color: #932626;
+                        color: #ffffff;
+                        border-color: #932626;
+                        transition: all 0.3s ease-in-out;
+                    }
+        
+                    .toggle-btn:hover {
+                        background-color: #ffffff;
+                        color: #932626;
+                        border-color: #932626;
+                    }
+        
+                    .toggle-content {
+                        max-height: 0;
+                        overflow: hidden;
+                        transition: max-height 0.5s ease-in-out;
+                    }
+        
+                    .toggle-content.show {
+                        max-height: 500px;
+                    }
+        
+                    .edit-btn {
+                        transition: opacity 0.5s ease-in-out;
+                    }
+                </style>
+
+                {% for title_schedule in title_schedules %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-title">{{ title_schedule.employee_title }}</h5>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="{% url 'time_management_update' title_schedule.uid %}" class="btn toggle-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{% url 'time_management_delete' title_schedule.uid %}" class="btn toggle-btn edit-btn">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+                {% empty %}
+                <div class="alert alert-warning text-center" role="alert">
+                    No time schedules found.
+                </div>
+                {% endfor %}
+        
+            </div>
+        </div>
+
+        </div>
+        
+        {% include 'dashboard/footer.html' %}
+        </div>            
+{% endblock content %}
