@@ -5,6 +5,7 @@ from .models import Vacation
 from .utils import get_prev_next_month
 from .forms import VacationForm
 from django.contrib import messages
+from audit_logs.utils import create_audit_log
 
 
 def vacations(request, year=None, month=None):
@@ -15,7 +16,7 @@ def vacations(request, year=None, month=None):
     # Use URL parameters for year and month if available, else fall back to today's date
     if not year or not month:
         year, month = today.year, today.month
-
+        
     # When 'prev' or 'next' is clicked, capture the updated year and month
     if request.GET.get("year") and request.GET.get("month"):
         try:
@@ -46,9 +47,21 @@ def vacations(request, year=None, month=None):
                 date=date_str,
                 title=day_title,
             )
+            # Log the action of adding a vacation
+            create_audit_log(
+                action_performed="Added Vacation",
+                performed_by=profile,
+                details=f"User added a vacation on {date_str} with title '{day_title}'."
+            )
             messages.success(request, "Vacation added successfully!")
             return redirect("vacations")  # Redirect to the vacations page
         except Exception as e:
+            # Log the error if vacation creation fails
+            create_audit_log(
+                action_performed="Failed to Add Vacation",
+                performed_by=profile,
+                details=f"Error adding vacation on {date_str}: {str(e)}"
+            )
             messages.error(request, f"Error adding vacation: {str(e)}")
             return redirect("vacations")
 

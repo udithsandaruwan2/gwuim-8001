@@ -14,6 +14,7 @@ from weasyprint import HTML
 from attendance_management.models import Attendance
 from users.models import Profile
 from calendar import monthrange
+from audit_logs.utils import create_audit_log
 
 @login_required(login_url='login')
 def importExport(request):
@@ -31,9 +32,21 @@ def importExport(request):
             form.save()  # Save the form (which saves the file)
             file_path = form.instance.file.url  # Get the relative file URL
             process_attendance_csv(file_path)  # Process the CSV file
+            # Log the action of importing a file
+            create_audit_log(
+                action_performed="Imported Attendance File",
+                performed_by=profile,
+                details=f"User imported an attendance file: {form.instance.file.name}."
+            )
             messages.success(request, 'File imported successfully!')
             return redirect('csv_manager')  # Redirect to 'csv_manager' page after saving
         else:
+            # Log the error if form submission fails
+            create_audit_log(
+                action_performed="Invalid form submission. Please try again.",
+                performed_by=profile,
+                details=f"User imported an attendance file: {form.instance.file.name}."
+            )
             messages.error(request, 'Invalid form submission. Please try again.')
     else:
         form = AttendanceFileForm()  # Initialize the form for GET request
@@ -74,6 +87,8 @@ def exportAttendanceView(request):
     year = int(request.GET.get('year'))
     month = int(request.GET.get('month'))
 
+    profile = request.user.profile if request.user.is_authenticated else None
+
     # Get all days in the selected month
     total_days_in_month = get_days_in_month(year, month)
 
@@ -83,6 +98,12 @@ def exportAttendanceView(request):
         date__year=year,
         date__month=month
     ).order_by('date')
+
+    create_audit_log(
+        action_performed="Exported Attendance Records",
+        performed_by=profile,
+        details=f"User exported attendance records for employee {id} for {month}/{year}."
+    )
 
     # Get logo URL for use in template
     logo_url = request.build_absolute_uri(static('logo.png'))
@@ -110,6 +131,13 @@ def exportAttendanceSummaryView(request):
         date__year=year,
         date__month=month
     ).order_by('date')
+
+    profile = request.user.profile if request.user.is_authenticated else None
+    create_audit_log(
+        action_performed="Exported Attendance Summary",
+        performed_by=profile,
+        details=f"User exported attendance summary for employee {id} for {month}/{year}."
+    )
 
     # Get logo URL for use in template
     logo_url = request.build_absolute_uri(static('logo.png'))
